@@ -1,0 +1,5 @@
+# 作者简介 {#author .unnumbered}
+
+统计学学生.
+
+主要用R和tex.
