@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>第 1 章 常用函数 | R中的统计模拟</title>
+  <title>第 1 章 常用函数及常见错误 | R中的统计模拟</title>
   <meta name="description" content="在R中进行统计模拟的一些总结." />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="第 1 章 常用函数 | R中的统计模拟" />
+  <meta property="og:title" content="第 1 章 常用函数及常见错误 | R中的统计模拟" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="Ri0016/Simulation-in-R" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="第 1 章 常用函数 | R中的统计模拟" />
+  <meta name="twitter:title" content="第 1 章 常用函数及常见错误 | R中的统计模拟" />
   
   <meta name="twitter:description" content="在R中进行统计模拟的一些总结." />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-09" />
+<meta name="date" content="2019-07-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="author.html">
-<link rel="next" href="section-7.html">
+<link rel="next" href="section-8.html">
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
@@ -47,6 +47,10 @@
 
 
 
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/viz/viz.js"></script>
+<link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding/grViz.js"></script>
 
 
 <style type="text/css">
@@ -133,23 +137,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#section-1"><i class="fa fa-check"></i>致谢</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="author.html"><a href="author.html"><i class="fa fa-check"></i>作者简介</a></li>
-<li class="chapter" data-level="1" data-path="section-2.html"><a href="section-2.html"><i class="fa fa-check"></i><b>1</b> 常用函数</a><ul>
+<li class="chapter" data-level="1" data-path="section-2.html"><a href="section-2.html"><i class="fa fa-check"></i><b>1</b> 常用函数及常见错误</a><ul>
 <li class="chapter" data-level="1.1" data-path="section-2.html"><a href="section-2.html#section-3"><i class="fa fa-check"></i><b>1.1</b> 产生数据</a></li>
 <li class="chapter" data-level="1.2" data-path="section-2.html"><a href="section-2.html#section-4"><i class="fa fa-check"></i><b>1.2</b> 定义运算符</a></li>
-<li class="chapter" data-level="1.3" data-path="section-2.html"><a href="section-2.html#predict"><i class="fa fa-check"></i><b>1.3</b> predict函数</a></li>
-<li class="chapter" data-level="1.4" data-path="section-2.html"><a href="section-2.html#section-5"><i class="fa fa-check"></i><b>1.4</b> 保存结果</a></li>
-<li class="chapter" data-level="1.5" data-path="section-2.html"><a href="section-2.html#section-6"><i class="fa fa-check"></i><b>1.5</b> 结果输出</a></li>
+<li class="chapter" data-level="1.3" data-path="section-2.html"><a href="section-2.html#section-5"><i class="fa fa-check"></i><b>1.3</b> 自动纠错</a></li>
+<li class="chapter" data-level="1.4" data-path="section-2.html"><a href="section-2.html#predict"><i class="fa fa-check"></i><b>1.4</b> predict函数</a></li>
+<li class="chapter" data-level="1.5" data-path="section-2.html"><a href="section-2.html#section-6"><i class="fa fa-check"></i><b>1.5</b> 保存结果</a></li>
+<li class="chapter" data-level="1.6" data-path="section-2.html"><a href="section-2.html#section-7"><i class="fa fa-check"></i><b>1.6</b> 结果输出</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="section-7.html"><a href="section-7.html"><i class="fa fa-check"></i><b>2</b> 常见错误</a></li>
-<li class="chapter" data-level="3" data-path="section-8.html"><a href="section-8.html"><i class="fa fa-check"></i><b>3</b> 参数估计</a><ul>
-<li class="chapter" data-level="3.1" data-path="section-8.html"><a href="section-8.html#m"><i class="fa fa-check"></i><b>3.1</b> M估计</a></li>
-<li class="chapter" data-level="3.2" data-path="section-8.html"><a href="section-8.html#z"><i class="fa fa-check"></i><b>3.2</b> Z估计</a></li>
+<li class="chapter" data-level="2" data-path="section-8.html"><a href="section-8.html"><i class="fa fa-check"></i><b>2</b> 常见错误</a></li>
+<li class="chapter" data-level="3" data-path="section-9.html"><a href="section-9.html"><i class="fa fa-check"></i><b>3</b> 参数估计</a><ul>
+<li class="chapter" data-level="3.1" data-path="section-9.html"><a href="section-9.html#m"><i class="fa fa-check"></i><b>3.1</b> M估计</a></li>
+<li class="chapter" data-level="3.2" data-path="section-9.html"><a href="section-9.html#z"><i class="fa fa-check"></i><b>3.2</b> Z估计</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="section-9.html"><a href="section-9.html"><i class="fa fa-check"></i><b>4</b> 假设检验</a></li>
-<li class="chapter" data-level="5" data-path="section-10.html"><a href="section-10.html"><i class="fa fa-check"></i><b>5</b> 进阶技巧</a><ul>
-<li class="chapter" data-level="5.1" data-path="section-10.html"><a href="section-10.html#apply"><i class="fa fa-check"></i><b>5.1</b> apply函数族</a></li>
-<li class="chapter" data-level="5.2" data-path="section-10.html"><a href="section-10.html#section-11"><i class="fa fa-check"></i><b>5.2</b> 并行</a></li>
-<li class="chapter" data-level="5.3" data-path="section-10.html"><a href="section-10.html#rcpp"><i class="fa fa-check"></i><b>5.3</b> Rcpp</a></li>
+<li class="chapter" data-level="4" data-path="section-10.html"><a href="section-10.html"><i class="fa fa-check"></i><b>4</b> 假设检验</a></li>
+<li class="chapter" data-level="5" data-path="section-11.html"><a href="section-11.html"><i class="fa fa-check"></i><b>5</b> 进阶技巧</a><ul>
+<li class="chapter" data-level="5.1" data-path="section-11.html"><a href="section-11.html#apply"><i class="fa fa-check"></i><b>5.1</b> apply函数族</a></li>
+<li class="chapter" data-level="5.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>5.2</b> 并行</a></li>
+<li class="chapter" data-level="5.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>5.3</b> Rcpp</a></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
 <li class="chapter" data-level="A" data-path="sound.html"><a href="sound.html"><i class="fa fa-check"></i><b>A</b> 余音绕梁</a></li>
@@ -175,23 +180,169 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="section-2" class="section level1">
-<h1><span class="header-section-number">第 1 章</span> 常用函数</h1>
+<h1><span class="header-section-number">第 1 章</span> 常用函数及常见错误</h1>
 <div id="section-3" class="section level2">
 <h2><span class="header-section-number">1.1</span> 产生数据</h2>
+<p>在进行模拟时, 我们经常会需要生成数据. 这里以正态分布为例, 说明如 何产生数据. 在 R 中, 每种分布都会有以下 4 个函数:</p>
+<ul>
+<li>概率密度函数: dnorm(x, mean = 0, sd = 1, log = FALSE)</li>
+<li>累计分布函数: pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)</li>
+<li>分位数函数: qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)</li>
+<li>随机数产生: rnorm(n, mean = 0, sd = 1):</li>
+</ul>
+<p>其中前 3 个函数都支持向量输入, 即计算一组取值的概率密度、累计分布、 分位数. 最后一个函数常用来生成数据,n 即产生数据的个数. 如果需要生成 多维正态分布, 需要调用 MASS 包中的
+*mvrnorm(n = 1, mu, Sigma, tol = 1e-6, empirical = FALSE, EISPACK = FALSE),
+其中 Sigma 是指定的协方差矩阵.</p>
 </div>
 <div id="section-4" class="section level2">
 <h2><span class="header-section-number">1.2</span> 定义运算符</h2>
-</div>
-<div id="predict" class="section level2">
-<h2><span class="header-section-number">1.3</span> predict函数</h2>
+<p>空间模型 (SAR) 中, 会出现对角块矩阵 <span class="math display">\[ \mathbf{W}=\left(\begin{array}{cccc}{\mathbf{M}} &amp; {} &amp; {} &amp; {} \\ {} &amp; {\mathbf{M}} &amp; {} &amp; {} \\ {} &amp; {} &amp; {\ddots} &amp; {} \\ {} &amp; {} &amp; {} &amp; {\mathbf{M}}\end{array}\right) \]</span></p>
+<p>M 作为权重矩阵, 这种形式的矩阵可以利用克罗内克积 (Kronecker product, 符号为<span class="math inline">\(\otimes\)</span>) 在 R 中很方便的产生,命令是%x%.
+可以写成<span class="math display">\[\mathbf{W} = \mathbf{I} \otimes \mathbf{M}.\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diag</span>(<span class="dv">3</span>)<span class="op">%x%</span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">3</span>)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
+## [1,]    1    3    5    0    0    0    0    0    0
+## [2,]    2    4    6    0    0    0    0    0    0
+## [3,]    0    0    0    1    3    5    0    0    0
+## [4,]    0    0    0    2    4    6    0    0    0
+## [5,]    0    0    0    0    0    0    1    3    5
+## [6,]    0    0    0    0    0    0    2    4    6</code></pre>
+<p>这是借助自定义运算符实现的.自定义运算符是一种特殊的函数,当参数只有两个变量时,可以进行定义.用法如下:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="st">&#39;%myop%&#39;</span>&lt;-<span class="cf">function</span>(a,b){a<span class="op">^</span>b<span class="op">+</span>b<span class="op">^</span>a}
+<span class="dv">2</span><span class="op">%myop%</span><span class="dv">3</span></code></pre>
+<pre><code>## [1] 17</code></pre>
+<p>利用自定义运算符,可以实现很方便的功能.R中矩阵乘法(%*%)、Kronecker乘积(%x%)都是这样实现的.另外还有整除(%/%)和取余(%%)</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">9</span><span class="op">%/%</span><span class="dv">4</span></code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">13</span><span class="op">%%</span><span class="dv">3</span></code></pre>
+<pre><code>## [1] 1</code></pre>
 </div>
 <div id="section-5" class="section level2">
-<h2><span class="header-section-number">1.4</span> 保存结果</h2>
+<h2><span class="header-section-number">1.3</span> 自动纠错</h2>
+<p>当我们输入的命令不规范时,R会自动纠正,以保证程序正常运行.</p>
+<p>比如看下面的例子:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">:</span><span class="dv">4</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">2</span></code></pre>
+<pre><code>## [1] 0 0 2 2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">:</span><span class="dv">5-1</span><span class="op">:</span><span class="dv">2</span></code></pre>
+<pre><code>## Warning in 1:5 - 1:2: longer object length is not a
+## multiple of shorter object length</code></pre>
+<pre><code>## [1] 0 0 2 2 4</code></pre>
+<p>当运算的向量长度不一致时,R会自动重复短的向量,使之长度与另外的向量长度相同进行运算.但是当长度是整数倍当时候,不会有任何提示.</p>
+<p>再看下面当例子:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">3</span>)<span class="op">*</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    4    7
+## [2,]    4   10   16
+## [3,]    9   18   27</code></pre>
+<p>本来想计算矩阵与向量的乘积,但是错误使用了*,
+未使用矩阵乘法%*%,R也可以计算返回一个矩阵,不会有warning.</p>
+<p>当条件为向量是,只会判断第一个值:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>( <span class="dv">1</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="kw">print</span>(<span class="st">&quot;真&quot;</span>)  <span class="cf">else</span> <span class="kw">print</span>(<span class="st">&quot;假&quot;</span>)</code></pre>
+<pre><code>## Warning in if (1 &lt;= 1:3) print(&quot;真&quot;) else print(&quot;假&quot;):
+## the condition has length &gt; 1 and only the first element
+## will be used</code></pre>
+<pre><code>## [1] &quot;真&quot;</code></pre>
+<p>如果条件为向量,应该使用all或者any函数:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all</span>(<span class="dv">1</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all</span>(<span class="dv">2</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>所有都真的时候返回TRUE.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">any</span>(<span class="dv">4</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">any</span>(<span class="dv">2</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>只要有一个为真就返回TRUE.</p>
+</div>
+<div id="predict" class="section level2">
+<h2><span class="header-section-number">1.4</span> predict函数</h2>
+<p>当我们拟合好一个模型时,下一步要做的就是评价模型好坏或者对新数据预测.这都需要将新的输入值带入模型中计算,得到预测值.区别只是有没有真值对比.对于简单模型,我们当然可以直接提取系数,自己计算预测值,但是当模型复杂时(比如时间序列模型),就不太容易操作.</p>
+<p>R借助泛型函数<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>,编写模型都会提供summary、predict、plot等函数方便调用.但是在学习过程中发现经常会不小心错误使用,特此单独说明一下.下面以线性模型为例,先看正确的使用方法:</p>
+<pre class="sourceCode r"><code class="sourceCode r">n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>);
+X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+trainlist =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n,<span class="dv">70</span>)
+regData =<span class="st"> </span><span class="kw">data.frame</span>(Y,X)
+fitmodel =<span class="st"> </span><span class="kw">lm</span>(Y<span class="op">~</span>.,<span class="dt">data=</span>regData[trainlist,])
+pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata=</span>regData[<span class="op">-</span>trainlist,])
+<span class="kw">sum</span>((pe<span class="op">-</span>regData[<span class="op">-</span>trainlist,<span class="dv">1</span>])<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(pe)</code></pre>
+<pre><code>## [1] 1.067</code></pre>
+<p>关键点:</p>
+<p><em>所有数据存在一个数据框中
+</em>通过下标控制训练集和测试集的数据</p>
+<p>错误程序1:</p>
+<pre class="sourceCode r"><code class="sourceCode r">n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>);
+X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+fitmodel =<span class="st"> </span><span class="kw">lm</span>(Y<span class="op">~</span>X)
+X2 =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y2 =<span class="st"> </span>X2<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+<span class="co">#predict(fitmodel,newdata = X2)数据格式错误,不能执行</span>
+pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X2))
+<span class="kw">sum</span>((pe<span class="op">-</span>Y2)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(Y2)</code></pre>
+<pre><code>## [1] 25.98</code></pre>
+<p>这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.</p>
+<p>错误程序2:</p>
+<pre class="sourceCode r"><code class="sourceCode r">n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>);
+X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+fitmodel =<span class="st"> </span><span class="kw">lm</span>(Y<span class="op">~</span>X)
+X2 =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="fl">0.2</span><span class="op">*</span>n<span class="op">*</span>p),<span class="fl">0.2</span><span class="op">*</span>n,p)
+Y2 =<span class="st"> </span>X2<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="fl">0.2</span><span class="op">*</span>n)
+pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X2))</code></pre>
+<pre><code>## Warning: &#39;newdata&#39; had 20 rows but variables found have
+## 100 rows</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(pe)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<p>修改测试数据的条数,使之与训练集数据量不同,可以发现warning.提示我们数据行数不一样.并且我们测试集合X2是20行,但是预测值pe返回的是100个值.问题在于predict函数使用不正确.</p>
+<p>我们用all指令查看:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all</span>(<span class="kw">predict</span>(fitmodel)<span class="op">==</span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X2)))</code></pre>
+<pre><code>## Warning: &#39;newdata&#39; had 20 rows but variables found have
+## 100 rows</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>查看函数说明</p>
+<pre class="sourceCode r"><code class="sourceCode r">?predict.lm</code></pre>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+<td>Object of class inheriting from “lm”</td>
+</tr>
+<tr class="even">
+<td>newdata</td>
+<td>An optional data frame in which to look for variables with which to predict. If omitted, the fitted values are used.</td>
+</tr>
+</tbody>
+</table>
+<p>newdata不是必要的参数,当缺失时候会使用拟合模型的数据.</p>
+<p>通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
 </div>
 <div id="section-6" class="section level2">
-<h2><span class="header-section-number">1.5</span> 结果输出</h2>
+<h2><span class="header-section-number">1.5</span> 保存结果</h2>
+</div>
+<div id="section-7" class="section level2">
+<h2><span class="header-section-number">1.6</span> 结果输出</h2>
+<div id="htmlwidget-63a6cad6e2361c2fb245" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-63a6cad6e2361c2fb245">{"x":{"diagram":"digraph {\n\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\ndata1 [label = \"Dataset 1\", shape = folder, fillcolor = Beige]\ndata2 [label = \"Dataset 2\", shape = folder, fillcolor = Beige]\nprocess [label =  \"Process \n Data\"]\nstatistical [label = \"Statistical \n Analysis\"]\nresults [label= \"Results\"]\n\n# edge definitions with the node IDs\n{data1 data2}  -> process -> statistical -> results\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>泛型函数简单讲就是根据输入数据类型,会自动匹配对应的计算方法.比如plot函数,传入1维向量、矩阵,程序都会正确画图.泛型函数的声明需要使用“.”,在自己编写函数时,最好不要用“.”.<a href="section-2.html#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.<a href="section-2.html#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
@@ -199,7 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="author.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="section-7.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="section-8.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook/js/app.min.js"></script>
@@ -244,6 +395,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

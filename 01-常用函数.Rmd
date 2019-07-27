@@ -1,20 +1,180 @@
 \mainmatter
 
-# 常用函数 
+# 常用函数及常见错误
 
 
 ## 产生数据
 
+在进行模拟时, 我们经常会需要生成数据. 这里以正态分布为例, 说明如 何产生数据. 在 R 中, 每种分布都会有以下 4 个函数:
 
+* 概率密度函数:  dnorm(x, mean = 0, sd = 1, log = FALSE)
+* 累计分布函数:  pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+*	分位数函数:  qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+*	随机数产生:  rnorm(n, mean = 0, sd = 1):
+
+
+其中前 3 个函数都支持向量输入, 即计算一组取值的概率密度、累计分布、 分位数. 最后一个函数常用来生成数据,n 即产生数据的个数. 如果需要生成 多维正态分布, 需要调用 MASS 包中的 
+*mvrnorm(n = 1, mu, Sigma, tol = 1e-6, empirical = FALSE, EISPACK = FALSE), 
+其中 Sigma 是指定的协方差矩阵.
 
 ## 定义运算符
 
 
-## predict函数
+空间模型 (SAR) 中, 会出现对角块矩阵 $$ \mathbf{W}=\left(\begin{array}{cccc}{\mathbf{M}} & {} & {} & {} \\ {} & {\mathbf{M}} & {} & {} \\ {} & {} & {\ddots} & {} \\ {} & {} & {} & {\mathbf{M}}\end{array}\right) $$
 
+M 作为权重矩阵, 这种形式的矩阵可以利用克罗内克积 (Kronecker product, 符号为$\otimes$) 在 R 中很方便的产生,命令是%x%.
+可以写成$$\mathbf{W} = \mathbf{I} \otimes \mathbf{M}.$$
+
+```{r}
+diag(3)%x%matrix(1:6,2,3)
+```
+
+
+这是借助自定义运算符实现的.自定义运算符是一种特殊的函数,当参数只有两个变量时,可以进行定义.用法如下:
+
+```{r}
+'%myop%'<-function(a,b){a^b+b^a}
+2%myop%3
+```
+
+利用自定义运算符,可以实现很方便的功能.R中矩阵乘法(%*%)、Kronecker乘积(%x%)都是这样实现的.另外还有整除(%/%)和取余(%%)
+```{r}
+9%/%4
+13%%3
+```
+
+## 自动纠错
+
+当我们输入的命令不规范时,R会自动纠正,以保证程序正常运行.
+
+比如看下面的例子:
+
+```{r}
+1:4 - 1:2
+1:5-1:2
+```
+
+当运算的向量长度不一致时,R会自动重复短的向量,使之长度与另外的向量长度相同进行运算.但是当长度是整数倍当时候,不会有任何提示.
+
+再看下面当例子:
+```{r}
+matrix(1:9,3,3)*(1:3)
+```
+本来想计算矩阵与向量的乘积,但是错误使用了\*,
+未使用矩阵乘法%\*%,R也可以计算返回一个矩阵,不会有warning.
+
+当条件为向量是,只会判断第一个值:
+```{r}
+if( 1 <= 1:3) print("真")  else print("假")
+```
+
+如果条件为向量,应该使用all或者any函数:
+```{r}
+all(1 <= 1:3)
+all(2 <= 1:3)
+```
+所有都真的时候返回TRUE.
+
+```{r}
+any(4 <= 1:3)
+any(2 <= 1:3)
+```
+只要有一个为真就返回TRUE.
+
+
+## predict函数
+当我们拟合好一个模型时,下一步要做的就是评价模型好坏或者对新数据预测.这都需要将新的输入值带入模型中计算,得到预测值.区别只是有没有真值对比.对于简单模型,我们当然可以直接提取系数,自己计算预测值,但是当模型复杂时(比如时间序列模型),就不太容易操作.
+
+R借助泛型函数[^1],编写模型都会提供summary、predict、plot等函数方便调用.但是在学习过程中发现经常会不小心错误使用,特此单独说明一下.下面以线性模型为例,先看正确的使用方法:
+```{r}
+n=100;p=3;beta=c(1,2,3);
+X = matrix(rnorm(n*p),n,p)
+Y = X%*%beta + rnorm(n)
+trainlist = sample(1:n,70)
+regData = data.frame(Y,X)
+fitmodel = lm(Y~.,data=regData[trainlist,])
+pe = predict(fitmodel,newdata=regData[-trainlist,])
+sum((pe-regData[-trainlist,1])^2)/length(pe)
+```
+
+关键点:
+
+*所有数据存在一个数据框中
+*通过下标控制训练集和测试集的数据
+
+
+错误程序1:
+```{r}
+n=100;p=3;beta=c(1,2,3);
+X = matrix(rnorm(n*p),n,p)
+Y = X%*%beta + rnorm(n)
+fitmodel = lm(Y~X)
+X2 = matrix(rnorm(n*p),n,p)
+Y2 = X2%*%beta + rnorm(n)
+#predict(fitmodel,newdata = X2)数据格式错误,不能执行
+pe = predict(fitmodel,newdata = data.frame(X2))
+sum((pe-Y2)^2)/length(Y2)
+```
+这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.
+
+
+错误程序2:
+```{r}
+n=100;p=3;beta=c(1,2,3);
+X = matrix(rnorm(n*p),n,p)
+Y = X%*%beta + rnorm(n)
+fitmodel = lm(Y~X)
+X2 = matrix(rnorm(0.2*n*p),0.2*n,p)
+Y2 = X2%*%beta + rnorm(0.2*n)
+pe = predict(fitmodel,newdata = data.frame(X2))
+length(pe)
+```
+修改测试数据的条数,使之与训练集数据量不同,可以发现warning.提示我们数据行数不一样.并且我们测试集合X2是20行,但是预测值pe返回的是100个值.问题在于predict函数使用不正确.
+
+我们用all指令查看:
+```{r}
+all(predict(fitmodel)==predict(fitmodel,newdata = data.frame(X2)))
+```
+
+
+查看函数说明
+```{r}
+?predict.lm
+```
+|参数|说明|
+| --- | ------------------ |
+|object| Object of class inheriting from "lm"|
+|newdata | An optional data frame in which to look for variables with which to predict. If omitted, the fitted values are used.|
+
+newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
+
+通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解[^n].
 
 ## 保存结果
 
 
 ## 结果输出
 
+
+```{r 流程图, echo=FALSE, message=FALSE, warning=FALSE}
+DiagrammeR::grViz("digraph {
+
+graph [layout = dot, rankdir = LR]
+
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = Linen]
+
+data1 [label = 'Dataset 1', shape = folder, fillcolor = Beige]
+data2 [label = 'Dataset 2', shape = folder, fillcolor = Beige]
+process [label =  'Process \n Data']
+statistical [label = 'Statistical \n Analysis']
+results [label= 'Results']
+
+# edge definitions with the node IDs
+{data1 data2}  -> process -> statistical -> results
+}")
+```
+
+
+[^1]:泛型函数简单讲就是根据输入数据类型,会自动匹配对应的计算方法.比如plot函数,传入1维向量、矩阵,程序都会正确画图.泛型函数的声明需要使用“.",在自己编写函数时,最好不要用“.”.
+[^n]:因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.
