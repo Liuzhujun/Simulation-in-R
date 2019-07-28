@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>第 3 章 参数估计 | R中的统计模拟</title>
+  <title>第 2 章 参数估计 | R中的统计模拟</title>
   <meta name="description" content="在R中进行统计模拟的一些总结." />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="第 3 章 参数估计 | R中的统计模拟" />
+  <meta property="og:title" content="第 2 章 参数估计 | R中的统计模拟" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="Ri0016/Simulation-in-R" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="第 3 章 参数估计 | R中的统计模拟" />
+  <meta name="twitter:title" content="第 2 章 参数估计 | R中的统计模拟" />
   
   <meta name="twitter:description" content="在R中进行统计模拟的一些总结." />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-27" />
+<meta name="date" content="2019-07-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="section-8.html">
+<link rel="prev" href="section-2.html">
 <link rel="next" href="section-10.html">
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
@@ -144,17 +144,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="section-2.html"><a href="section-2.html#predict"><i class="fa fa-check"></i><b>1.4</b> predict函数</a></li>
 <li class="chapter" data-level="1.5" data-path="section-2.html"><a href="section-2.html#section-6"><i class="fa fa-check"></i><b>1.5</b> 保存结果</a></li>
 <li class="chapter" data-level="1.6" data-path="section-2.html"><a href="section-2.html#section-7"><i class="fa fa-check"></i><b>1.6</b> 结果输出</a></li>
+<li class="chapter" data-level="1.7" data-path="section-2.html"><a href="section-2.html#section-8"><i class="fa fa-check"></i><b>1.7</b> 模拟流程</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="section-8.html"><a href="section-8.html"><i class="fa fa-check"></i><b>2</b> 常见错误</a></li>
-<li class="chapter" data-level="3" data-path="section-9.html"><a href="section-9.html"><i class="fa fa-check"></i><b>3</b> 参数估计</a><ul>
-<li class="chapter" data-level="3.1" data-path="section-9.html"><a href="section-9.html#m"><i class="fa fa-check"></i><b>3.1</b> M估计</a></li>
-<li class="chapter" data-level="3.2" data-path="section-9.html"><a href="section-9.html#z"><i class="fa fa-check"></i><b>3.2</b> Z估计</a></li>
+<li class="chapter" data-level="2" data-path="section-9.html"><a href="section-9.html"><i class="fa fa-check"></i><b>2</b> 参数估计</a><ul>
+<li class="chapter" data-level="2.1" data-path="section-9.html"><a href="section-9.html#m"><i class="fa fa-check"></i><b>2.1</b> M估计</a></li>
+<li class="chapter" data-level="2.2" data-path="section-9.html"><a href="section-9.html#z"><i class="fa fa-check"></i><b>2.2</b> Z估计</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="section-10.html"><a href="section-10.html"><i class="fa fa-check"></i><b>4</b> 假设检验</a></li>
-<li class="chapter" data-level="5" data-path="section-11.html"><a href="section-11.html"><i class="fa fa-check"></i><b>5</b> 进阶技巧</a><ul>
-<li class="chapter" data-level="5.1" data-path="section-11.html"><a href="section-11.html#apply"><i class="fa fa-check"></i><b>5.1</b> apply函数族</a></li>
-<li class="chapter" data-level="5.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>5.2</b> 并行</a></li>
-<li class="chapter" data-level="5.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>5.3</b> Rcpp</a></li>
+<li class="chapter" data-level="3" data-path="section-10.html"><a href="section-10.html"><i class="fa fa-check"></i><b>3</b> 假设检验</a></li>
+<li class="chapter" data-level="4" data-path="section-11.html"><a href="section-11.html"><i class="fa fa-check"></i><b>4</b> 进阶技巧</a><ul>
+<li class="chapter" data-level="4.1" data-path="section-11.html"><a href="section-11.html#apply"><i class="fa fa-check"></i><b>4.1</b> apply函数族</a></li>
+<li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a></li>
+<li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
 <li class="chapter" data-level="A" data-path="sound.html"><a href="sound.html"><i class="fa fa-check"></i><b>A</b> 余音绕梁</a></li>
@@ -180,21 +180,100 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="section-9" class="section level1">
-<h1><span class="header-section-number">第 3 章</span> 参数估计</h1>
+<h1><span class="header-section-number">第 2 章</span> 参数估计</h1>
+<p>对于参数估计的模拟,主要分成三步:</p>
+<ol style="list-style-type: decimal">
+<li>生成数据;</li>
+<li>估计参数;</li>
+<li>评价估计好坏.</li>
+</ol>
+<p>对于生成数据,在阅读文献时,文章中会明确给出如何产生.我们不必多费周折.在设计我们自己的模拟实验时,多借鉴其他文献中的例子.一方面方便和其他文献进行比较,另一方面,可以避免落入陷阱<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>.</p>
+<p>对于评价估计好坏,有限维离散参数一般采取<span class="math inline">\(\left\|\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_{0}\right\|,\)</span>无穷维函数一般采取<span class="math inline">\(\int\left(\hat{m}(x)-m_{0}(x)\right)^{2} d x.\)</span></p>
+<p>估计量通过解估计方程得到,根据方程的形式,分为M估计量和Z估计量,下面分别说明.</p>
 <div id="m" class="section level2">
-<h2><span class="header-section-number">3.1</span> M估计</h2>
+<h2><span class="header-section-number">2.1</span> M估计</h2>
+<p>定义:极大化(或极小化)目标函数得到参数估计值.</p>
+<p><span class="math display">\[
+M_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n} m_{\theta}\left(X_{i}\right)
+\]</span></p>
+<p><span class="math display">\[
+\hat{\theta}=\arg \max_{\theta \in \Theta} M_{n}(\theta)
+\]</span></p>
+<p>其中<span class="math inline">\(m_{\theta}\left(X_{i}\right)\)</span>为已知函数.特别的,如果<span class="math inline">\(M_n(\theta)\)</span>可导,M估计量和Z估计量有等价形式.</p>
+<p>下面以线性模型为例:<span class="math inline">\(\boldsymbol{Y}=\boldsymbol{X}^{T}\boldsymbol{\theta}+\boldsymbol{\varepsilon}\)</span></p>
+<p>考虑最小二乘估计,取<span class="math inline">\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=-\left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)^{2}\)</span><a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>,则</p>
+<p><span class="math display">\[ 
+\begin{aligned} 
+M_{n}(\theta)&amp;=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)^{2}\\
+&amp;=-\frac{1}{n}\left(\boldsymbol{Y}-\boldsymbol{X}^{T} \boldsymbol{\theta}\right)^{T}\left(\boldsymbol{Y}-\boldsymbol{X}^{T} \boldsymbol{\theta}\right)\\
+&amp;=-\frac{1}{n}\left(\boldsymbol{\theta}^{T} \boldsymbol{X} \boldsymbol{X}^{T} \boldsymbol{\theta}-2 \boldsymbol{Y}^{T} \boldsymbol{X}^{T} \boldsymbol{\theta}+\boldsymbol{Y}^{T} \boldsymbol{Y}\right)
+\end{aligned} 
+\]</span>
+其中最后一项是与<span class="math inline">\(\boldsymbol{\theta}\)</span>无关的常数项,可以不考虑,进而可以整理成如下的二次规划问题:</p>
+<p>利用quadprog包中的函数可以求解</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quadprog)
+n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>);
+X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef <span class="op">==</span><span class="st"> </span><span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution</code></pre>
+<pre><code>##    X1    X2    X3 
+## FALSE FALSE FALSE</code></pre>
+<p>可以看到结果显示不相等,但是如果我们打印出来显示:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef</code></pre>
+<pre><code>##      X1      X2      X3 
+##  0.8902 -1.9929  3.2289</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution</code></pre>
+<pre><code>## [1]  0.8902 -1.9929  3.2289</code></pre>
+<p>可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">abs</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef <span class="op">-</span>
+<span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution))</code></pre>
+<pre><code>## [1] 3.109e-15</code></pre>
+<p>另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
+<span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
+,<span class="dt">tolerance=</span><span class="fl">1e-10</span>)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
+<span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
+,<span class="dt">tolerance=</span><span class="fl">1e-20</span>)</code></pre>
+<pre><code>## [1] &quot;Mean relative difference: 5.086e-16&quot;</code></pre>
+<p>下面考虑稍复杂的情况,取
+<span class="math inline">\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=\rho_{\tau}\left(y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)\)</span>,其中
+<span class="math inline">\(\rho_{\tau}(t)=t\left(\tau-I_{\{t&lt;0\}}\right)\)</span>.
+这称为分位数回归,详细的推导过程可以在<a href="https://github.com/dujiangbjut/dujiangbjut.github.io/tree/master/讨论班/分位数回归">分位数回归总结</a>查看<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>.</p>
+<p><strong>这里缺少一个M估计迭代求解的例子</strong></p>
 </div>
 <div id="z" class="section level2">
-<h2><span class="header-section-number">3.2</span> Z估计</h2>
+<h2><span class="header-section-number">2.2</span> Z估计</h2>
+<p>定义:解一个等于0的方程得到参数估计.</p>
+<p><span class="math display">\[
+\Psi_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n} \psi_{\theta}\left(X_{i}\right)=0,
+\]</span>
+其中<span class="math inline">\(\psi_{\theta}\left(X_{i}\right)\)</span>为已知函数.</p>
+<p><span class="math inline">\(\hat{\theta}\)</span>为
+<span class="math inline">\(\Psi_{n}(\theta)=0\)</span>的解.</p>
+<p>回到线性模型最小二乘的例子,由于目标函数存在导数,可以转化成一个Z估计量.取
+<span class="math inline">\(\psi_{\theta}\left(X_{i}\right)=m_{\theta}&#39;\left(X_{i}\right)=2\boldsymbol{X}_{i}^{T} \left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)\)</span></p>
+<p><span class="math display">\[
+\Psi_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n}\boldsymbol{X}_{i}^{T}  \left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right) =\boldsymbol{X} \boldsymbol{X}^{T} \boldsymbol{\theta}-\boldsymbol{X} \boldsymbol{Y}=0,
+\]</span></p>
 
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="6">
+<li id="fn6"><p>给定模型和估计方法,不同数据的估计效果是不一样的.我们要清楚自己的方法对于什么样的数据应该有较好的结果,什么样的数据可能估计效果不好.对此设计不同代表性的实验.这也给阅读文献模拟部分添加了任务,思考作者为什么用这种方式产生数据、设置参数.<a href="section-9.html#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>添加负号与求极大值对应.<a href="section-9.html#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p>后续重新整理成Rmd格式.<a href="section-9.html#fnref8" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="section-8.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="section-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="section-10.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

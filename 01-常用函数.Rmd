@@ -136,8 +136,9 @@ length(pe)
 all(predict(fitmodel)==predict(fitmodel,newdata = data.frame(X2)))
 ```
 
+就是说我们输入的参数没起到作用.
 
-查看函数说明
+查看函数说明[^2]
 ```{r}
 ?predict.lm
 ```
@@ -145,16 +146,58 @@ all(predict(fitmodel)==predict(fitmodel,newdata = data.frame(X2)))
 | --- | ------------------ |
 |object| Object of class inheriting from "lm"|
 |newdata | An optional data frame in which to look for variables with which to predict. If omitted, the fitted values are used.|
+|...||
 
 newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
+至于为什么输入的数据不能正确识别,因为名字不一样.R中参数的传递都是通过名字,我们在拟合lm时候,解释变量的名字叫‘X’,所以传入‘X2’不会识别到.如果把‘X2’改名成‘X’,即可正确预测[^3],比如看下面的程序:
+```{r}
+n=100;p=3;beta=c(1,2,3);
+X = matrix(rnorm(n*p),n,p)
+Y = X%*%beta + rnorm(n)
+fitmodel = lm(Y~X)
+X = matrix(rnorm(0.2*n*p),0.2*n,p)
+Y2 = X%*%beta + rnorm(0.2*n)
+pe = predict(fitmodel,newdata = data.frame(X))
+sum((Y2-pe)^2)/length(pe)
+```
 
-通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解[^n].
+
+
+通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解[^4].
 
 ## 保存结果
 
+我们重复了M次实验(运行几小时或者几天),计算了几个指标.但是后续通过阅读其他文献或者老师的建议,需要计算一个新的指标.这时候,就可以打开之前保存好的运行结果,只需要进行分析画图即可,不需要重新运行程序[^5].
+
+
+```{r, eval=FALSE}
+getwd()
+setwd()
+save.image()
+```
+getwd,setwd分别用于获取、设置当前的工作目录.有时候我们保存了结果,但是不知道存到哪里,可以通过getwd查看当前的工作目录.当然,最好是在程序执行前,手动设置好工作目录.
+
+save.image用于保存工作空间,可以借助对于字符串操作函数paste等设置文件名.
 
 ## 结果输出
 
+R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章中展现.对于图片,只要单独保存成文件,在文章中插入即可.对于表格,如果不借助工具,会很耗时.这里我们通过xtable包中的函数,可以将表格数据转换成 LaTeX 内的表格形式.
+
+这里顺便介绍一下R中package的安装和加载.不管是在R GUI中,还是在Rstudio中,都可以通过点选菜单进行安装.如果通过命令安装,如下
+```{r, eval=FALSE}
+install.packages("xtable")
+```
+
+
+
+安装后,并不能直接使用.需要通过library命令加载后才能使用.一个package中包含很多函数和数据,有时候我们只需要使用其中的一个函数,不需要加载整个包.这时候可以通过下面这样,直接调用某个包中的函数,xtable有一些参数可以设置输出的格式,比如下面指定了小数部分位数:
+```{r}
+xtable::xtable(matrix(rnorm(15),3,5),digits=5)
+```
+
+这只是最基础的表格,LaTeX中[定制表头](https://github.com/Ri0016/table-update-tex)可以在这查看.
+
+## 模拟流程
 
 ```{r 流程图, echo=FALSE, message=FALSE, warning=FALSE}
 DiagrammeR::grViz("digraph {
@@ -177,4 +220,7 @@ results [label= 'Results']
 
 
 [^1]:泛型函数简单讲就是根据输入数据类型,会自动匹配对应的计算方法.比如plot函数,传入1维向量、矩阵,程序都会正确画图.泛型函数的声明需要使用“.",在自己编写函数时,最好不要用“.”.
-[^n]:因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.
+[^2]:因为泛型函数的关系,我们对lm返回的对象使用predict函数时,调用的是predict.lm
+[^3]:这样虽然可以正确运行,但是逻辑上比较混乱,还是建议将测试数据或预测数据与训练数据放到一起(预测的话可以将相应变量都设置成0).
+[^4]:因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.
+[^5]:这要求我们模拟时要尽可能完整的记录所有模拟结果,包括当前可能用不到的信息.
