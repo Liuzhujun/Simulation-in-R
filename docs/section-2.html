@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-28" />
+<meta name="date" content="2019-07-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,7 +266,7 @@ regData =<span class="st"> </span><span class="kw">data.frame</span>(Y,X)
 fitmodel =<span class="st"> </span><span class="kw">lm</span>(Y<span class="op">~</span>.,<span class="dt">data=</span>regData[trainlist,])
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata=</span>regData[<span class="op">-</span>trainlist,])
 <span class="kw">sum</span>((pe<span class="op">-</span>regData[<span class="op">-</span>trainlist,<span class="dv">1</span>])<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(pe)</code></pre>
-<pre><code>## [1] 1.387</code></pre>
+<pre><code>## [1] 1.183</code></pre>
 <p>关键点:</p>
 <p><em>所有数据存在一个数据框中
 </em>通过下标控制训练集和测试集的数据</p>
@@ -280,7 +280,7 @@ Y2 =<span class="st"> </span>X2<span class="op">%*%</span>beta <span class="op">
 <span class="co">#predict(fitmodel,newdata = X2)数据格式错误,不能执行</span>
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X2))
 <span class="kw">sum</span>((pe<span class="op">-</span>Y2)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(Y2)</code></pre>
-<pre><code>## [1] 27.46</code></pre>
+<pre><code>## [1] 31.49</code></pre>
 <p>这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.</p>
 <p>错误程序2:</p>
 <pre class="sourceCode r"><code class="sourceCode r">n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>);
@@ -339,7 +339,7 @@ X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnor
 Y2 =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="fl">0.2</span><span class="op">*</span>n)
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X))
 <span class="kw">sum</span>((Y2<span class="op">-</span>pe)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(pe)</code></pre>
-<pre><code>## [1] 1.516</code></pre>
+<pre><code>## [1] 1.316</code></pre>
 <p>通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 </div>
 <div id="section-6" class="section level2">
@@ -359,16 +359,16 @@ pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span clas
 <p>安装后,并不能直接使用.需要通过library命令加载后才能使用.一个package中包含很多函数和数据,有时候我们只需要使用其中的一个函数,不需要加载整个包.这时候可以通过下面这样,直接调用某个包中的函数,xtable有一些参数可以设置输出的格式,比如下面指定了小数部分位数:</p>
 <pre class="sourceCode r"><code class="sourceCode r">xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">15</span>),<span class="dv">3</span>,<span class="dv">5</span>),<span class="dt">digits=</span><span class="dv">5</span>)</code></pre>
 <pre><code>## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Sun Jul 28 21:58:13 2019
+## % Mon Jul 29 09:57:22 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 
 ##   \hline
-## 1 &amp; 0.07929 &amp; -1.29929 &amp; 0.89127 &amp; -0.06783 &amp; 0.59941 \\ 
-##   2 &amp; -0.61862 &amp; 0.40958 &amp; -1.14017 &amp; -0.43483 &amp; 0.92102 \\ 
-##   3 &amp; 2.03903 &amp; 0.09757 &amp; 0.07481 &amp; -0.81299 &amp; -2.48195 \\ 
+## 1 &amp; -1.12039 &amp; -0.27060 &amp; -1.71587 &amp; 1.28528 &amp; 1.20992 \\ 
+##   2 &amp; -0.77393 &amp; 0.16971 &amp; -0.10677 &amp; 0.50834 &amp; -0.06019 \\ 
+##   3 &amp; 1.24475 &amp; -0.06775 &amp; -0.15983 &amp; -1.95811 &amp; -1.50549 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}</code></pre>
@@ -376,8 +376,8 @@ pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span clas
 </div>
 <div id="section-8" class="section level2">
 <h2><span class="header-section-number">1.7</span> 模拟流程</h2>
-<div id="htmlwidget-7f9b1fc627e25841ac06" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7f9b1fc627e25841ac06">{"x":{"diagram":"digraph {\n\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\ndata1 [label = \"Dataset 1\", shape = folder, fillcolor = Beige]\ndata2 [label = \"Dataset 2\", shape = folder, fillcolor = Beige]\nprocess [label =  \"Process \n Data\"]\nstatistical [label = \"Statistical \n Analysis\"]\nresults [label= \"Results\"]\n\n# edge definitions with the node IDs\n{data1 data2}  -> process -> statistical -> results\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-40b40c18c002fe9dcbf6" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-40b40c18c002fe9dcbf6">{"x":{"diagram":"digraph {\n\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\ndata1 [label = \"Dataset 1\", shape = folder, fillcolor = Beige]\ndata2 [label = \"Dataset 2\", shape = folder, fillcolor = Beige]\nprocess [label =  \"Process \n Data\"]\nstatistical [label = \"Statistical \n Analysis\"]\nresults [label= \"Results\"]\n\n# edge definitions with the node IDs\n{data1 data2}  -> process -> statistical -> results\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
@@ -387,8 +387,8 @@ pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span clas
 <li id="fn1"><p>给定模型和估计方法,不同数据的估计效果是不一样的.我们要清楚自己的方法对于什么样的数据应该有较好的结果,什么样的数据可能估计效果不好.对此设计不同代表性的实验.这也给阅读文献模拟部分添加了任务,思考作者为什么用这种方式产生数据、设置参数.<a href="section-2.html#fnref1" class="footnote-back">↩</a></p></li>
 <li id="fn2"><p>添加负号与求极大值对应.<a href="section-2.html#fnref2" class="footnote-back">↩</a></p></li>
 <li id="fn3"><p>后续重新整理成Rmd格式.<a href="section-2.html#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.<a href="section-2.html#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>这要求我们模拟时要尽可能完整的记录所有模拟结果,包括当前可能用不到的信息.<a href="section-2.html#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>省略了常数系数.<a href="section-2.html#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>目前只有单次二项分布的程序正确.完整的程序可以从<a href="code/glm.R">这里</a>下载.<a href="section-2.html#fnref5" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>

@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-28" />
+<meta name="date" content="2019-07-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -181,6 +181,120 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="section-10" class="section level1">
 <h1><span class="header-section-number">第 3 章</span> 假设检验</h1>
+<p>假设检验部分模拟相对简单,只需要在估计出参数值后,按照检验统计量的形式正确计算即可.主要难点在于构造检验统计量以及给出检验统计量的渐近分布.</p>
+<p>常用的办法是通过自助法(bootstrap)估计分布.</p>
+<p>我们以最简单的二项分布为例,说明一些假设检验中的概念.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">X</th>
+<th align="right">p=0.5</th>
+<th align="right">p=0.6</th>
+<th align="right">p=0.7</th>
+<th align="right">p=0.8</th>
+<th align="right">p=0.9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0.0010</td>
+<td align="right">0.0001</td>
+<td align="right">0.0000</td>
+<td align="right">0.0000</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">0.0098</td>
+<td align="right">0.0016</td>
+<td align="right">0.0001</td>
+<td align="right">0.0000</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">0.0439</td>
+<td align="right">0.0106</td>
+<td align="right">0.0014</td>
+<td align="right">0.0001</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">0.1172</td>
+<td align="right">0.0425</td>
+<td align="right">0.0090</td>
+<td align="right">0.0008</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">0.2051</td>
+<td align="right">0.1115</td>
+<td align="right">0.0368</td>
+<td align="right">0.0055</td>
+<td align="right">0.0001</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="right">0.2461</td>
+<td align="right">0.2007</td>
+<td align="right">0.1029</td>
+<td align="right">0.0264</td>
+<td align="right">0.0015</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">0.2051</td>
+<td align="right">0.2508</td>
+<td align="right">0.2001</td>
+<td align="right">0.0881</td>
+<td align="right">0.0112</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">0.1172</td>
+<td align="right">0.2150</td>
+<td align="right">0.2668</td>
+<td align="right">0.2013</td>
+<td align="right">0.0574</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">0.0439</td>
+<td align="right">0.1209</td>
+<td align="right">0.2335</td>
+<td align="right">0.3020</td>
+<td align="right">0.1937</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">0.0098</td>
+<td align="right">0.0403</td>
+<td align="right">0.1211</td>
+<td align="right">0.2684</td>
+<td align="right">0.3874</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">0.0010</td>
+<td align="right">0.0060</td>
+<td align="right">0.0282</td>
+<td align="right">0.1074</td>
+<td align="right">0.3487</td>
+</tr>
+</tbody>
+</table>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>显著水平=第一类错误=<span class="math inline">\(\alpha\)</span>:为图中红色区域的面积</p>
+<p>第二类错误=<span class="math inline">\(\beta\)</span>:为图中蓝色区域的面积</p>
+<p>功效=势=power=<span class="math inline">\(1- \beta\)</span>:为图中蓝色曲线下空白面积</p>
+<p>检验的相合性:</p>
+<ol style="list-style-type: decimal">
+<li>在<span class="math inline">\(H_0\)</span>下, 拒绝概率(size)收敛到<span class="math inline">\(\alpha.\)</span></li>
+<li>在<span class="math inline">\(H_1\)</span>下, 拒绝概率(power)收敛到<span class="math inline">\(1.\)</span></li>
+</ol>
 
 </div>
             </section>

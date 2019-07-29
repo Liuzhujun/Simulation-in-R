@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-28" />
+<meta name="date" content="2019-07-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -181,8 +181,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="section-11" class="section level1">
 <h1><span class="header-section-number">第 4 章</span> 进阶技巧</h1>
+<p>程序的可读性和执行效率是两个很重要的要求.这一章主要介绍如何提高这两点.</p>
 <div id="apply" class="section level2">
 <h2><span class="header-section-number">4.1</span> apply函数族</h2>
+<p><strong>apply并不能提高执行效率,只能使代码简洁易读.</strong></p>
+<p>详细的介绍可以在<a href="http://blog.fens.me/r-apply/">apply函数族介绍</a>查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:</p>
+<pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)
+m</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(m, <span class="dv">2</span>, tapply,<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">2</span>), sum)</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## 1    4   12   20
+## 2    6   14   22</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(m, <span class="dv">2</span>, tapply,<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dt">each=</span><span class="dv">2</span>), sum)</code></pre>
+<pre><code>##   [,1] [,2] [,3]
+## 1    3   11   19
+## 2    7   15   23</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">24</span>,<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))
+a</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3]
+## [1,]    7    9   11
+## [2,]    8   10   12
+## 
+## , , 3
+## 
+##      [,1] [,2] [,3]
+## [1,]   13   15   17
+## [2,]   14   16   18
+## 
+## , , 4
+## 
+##      [,1] [,2] [,3]
+## [1,]   19   21   23
+## [2,]   20   22   24</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="dv">1</span>,sum)</code></pre>
+<pre><code>## [1] 144 156</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),sum)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    3   15   27   39
+## [2,]    7   19   31   43
+## [3,]   11   23   35   47</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),tapply,<span class="kw">rep</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>),<span class="dv">2</span>), sum)</code></pre>
+<pre><code>## , , 1
+## 
+##    [,1] [,2]
+## -2   26   28
+## -1   14   16
+## 
+## , , 2
+## 
+##    [,1] [,2]
+## -2   30   32
+## -1   18   20
+## 
+## , , 3
+## 
+##    [,1] [,2]
+## -2   34   36
+## -1   22   24</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aperm</span>(a,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    7   13   19
+## [2,]    3    9   15   21
+## [3,]    5   11   17   23
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    2    8   14   20
+## [2,]    4   10   16   22
+## [3,]    6   12   18   24</code></pre>
 </div>
 <div id="section-12" class="section level2">
 <h2><span class="header-section-number">4.2</span> 并行</h2>

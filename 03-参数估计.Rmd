@@ -112,8 +112,31 @@ all.equal(solve.QP(Dmat = t(X)%*%X/n, dvec = (t(Y)%*%X)/n, Amat = matrix(0,p,p))
 ```
 
 
-下面是一个迭代求解Z估计量的例子.
+下面是一个迭代求解Z估计量的例子[^5].
 
+**补充哪一篇参考文献**
+
+```{r}
+source("code/glm.R")
+n=500
+m1=2
+m2=2
+m3=2
+m=m1+m2+m3
+beta=c(rep(-1,m1),rep(0,m2),rep(1,m3))
+X=runif(n*m,-1,1)
+X=matrix(X,n,m)
+eta=X%*%beta
+mu=1/(1+exp(-eta))
+
+# Y~B(1,p)
+Y=runif(n)
+Y[Y>=mu]=0
+Y[Y>0]=1
+glm(Y~X+0,family=binomial(link="logit"))
+myglm(Y,X,distribution  = "binom")
+```
+可以看到和真值相差不大,但是很快收敛.
 
 
 
@@ -121,3 +144,4 @@ all.equal(solve.QP(Dmat = t(X)%*%X/n, dvec = (t(Y)%*%X)/n, Amat = matrix(0,p,p))
 [^2]:添加负号与求极大值对应.
 [^3]:后续重新整理成Rmd格式.
 [^4]:省略了常数系数.
+[^5]:目前只有单次二项分布的程序正确.完整的程序可以从[这里](code/glm.R)下载.

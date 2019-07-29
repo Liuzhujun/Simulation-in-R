@@ -1,7 +1,32 @@
 # 进阶技巧 
 
+程序的可读性和执行效率是两个很重要的要求.这一章主要介绍如何提高这两点.
+
 ## apply函数族
 
+**apply并不能提高执行效率,只能使代码简洁易读.**
+
+详细的介绍可以在[apply函数族介绍](http://blog.fens.me/r-apply/)查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:
+
+```{r}
+m <- matrix(1:12,4,3)
+m
+apply(m, 2, tapply,rep(1:2,2), sum)
+apply(m, 2, tapply,rep(1:2,each=2), sum)
+```
+
+
+
+
+```{r}
+a <- array(1:24,dim = c(2,3,4))
+a
+apply(a,1,sum)
+apply(a,c(2,3),sum)
+apply(a,c(1,2),tapply,rep(c(-1,-2),2), sum)
+aperm(a,c(2,3,1))
+
+```
 
 ## 并行
 

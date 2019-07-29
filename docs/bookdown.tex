@@ -172,7 +172,7 @@
 
 \title{R中的统计模拟}
 \author{wang}
-\date{2019-07-28}
+\date{2019-07-29}
 
 \begin{document}
 \maketitle
@@ -236,7 +236,7 @@
 ## [6] methods   base     
 ## 
 ## other attached packages:
-## [1] quadprog_1.5-7
+## [1] MASS_7.3-51.4  quadprog_1.5-7
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] tidyselect_0.2.5   xfun_0.7          
@@ -250,23 +250,24 @@
 ## [17] munsell_0.5.0      gtable_0.3.0      
 ## [19] visNetwork_2.0.7   htmlwidgets_1.3   
 ## [21] evaluate_0.14      knitr_1.23        
-## [23] DiagrammeR_1.0.1   Rcpp_1.0.1        
-## [25] xtable_1.8-4       readr_1.3.1       
-## [27] backports_1.1.4    scales_1.0.0      
-## [29] jsonlite_1.6       rgexf_0.15.3      
-## [31] gridExtra_2.3      brew_1.0-6        
-## [33] ggplot2_3.1.1      hms_0.5.0         
-## [35] digest_0.6.19      stringi_1.4.3     
-## [37] bookdown_0.11      dplyr_0.8.1       
-## [39] grid_3.6.0         influenceR_0.1.0  
-## [41] tools_3.6.0        magrittr_1.5      
-## [43] lazyeval_0.2.2     tibble_2.1.3      
-## [45] crayon_1.3.4       tidyr_0.8.3       
-## [47] pkgconfig_2.0.2    zeallot_0.1.0     
-## [49] downloader_0.4     assertthat_0.2.1  
-## [51] rmarkdown_1.13     rstudioapi_0.10   
-## [53] viridis_0.5.1      R6_2.4.0          
-## [55] igraph_1.2.4.1     compiler_3.6.0
+## [23] DiagrammeR_1.0.1   highr_0.8         
+## [25] Rcpp_1.0.1         xtable_1.8-4      
+## [27] readr_1.3.1        backports_1.1.4   
+## [29] scales_1.0.0       jsonlite_1.6      
+## [31] rgexf_0.15.3       gridExtra_2.3     
+## [33] brew_1.0-6         ggplot2_3.1.1     
+## [35] hms_0.5.0          digest_0.6.19     
+## [37] stringi_1.4.3      bookdown_0.11     
+## [39] dplyr_0.8.1        grid_3.6.0        
+## [41] influenceR_0.1.0   tools_3.6.0       
+## [43] magrittr_1.5       lazyeval_0.2.2    
+## [45] tibble_2.1.3       crayon_1.3.4      
+## [47] tidyr_0.8.3        pkgconfig_2.0.2   
+## [49] zeallot_0.1.0      downloader_0.4    
+## [51] assertthat_0.2.1   rmarkdown_1.13    
+## [53] rstudioapi_0.10    viridis_0.5.1     
+## [55] R6_2.4.0           igraph_1.2.4.1    
+## [57] compiler_3.6.0
 \end{verbatim}
 
 \hypertarget{author}{%
@@ -499,7 +500,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.02
+## [1] 1.435
 \end{verbatim}
 
 关键点:
@@ -524,7 +525,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 25.24
+## [1] 15.06
 \end{verbatim}
 
 这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.
@@ -631,15 +632,15 @@ newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.067
+## [1] 0.872
 \end{verbatim}
 
-通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解\footnote{因为任何一个实数可以分解成两个非负数的差,将搜索范围限定到正半轴,求解程序更好实现.}.
+通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解\footnote{省略了常数系数.}.
 
 \hypertarget{section-6}{%
 \section{保存结果}\label{section-6}}
 
-我们重复了M次实验(运行几小时或者几天),计算了几个指标.但是后续通过阅读其他文献或者老师的建议,需要计算一个新的指标.这时候,就可以打开之前保存好的运行结果,只需要进行分析画图即可,不需要重新运行程序\footnote{这要求我们模拟时要尽可能完整的记录所有模拟结果,包括当前可能用不到的信息.}.
+我们重复了M次实验(运行几小时或者几天),计算了几个指标.但是后续通过阅读其他文献或者老师的建议,需要计算一个新的指标.这时候,就可以打开之前保存好的运行结果,只需要进行分析画图即可,不需要重新运行程序\footnote{目前只有单次二项分布的程序正确.完整的程序可以从\href{code/glm.R}{这里}下载.}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -676,16 +677,16 @@ R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章
 
 \begin{verbatim}
 ## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Sun Jul 28 21:58:15 2019
+## % Mon Jul 29 09:57:25 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  & 1 & 2 & 3 & 4 & 5 \\ 
 ##   \hline
-## 1 & 0.62408 & -1.10195 & -0.12720 & -0.08618 & -0.61655 \\ 
-##   2 & -0.04658 & 0.36874 & -1.81593 & -1.08585 & 0.89526 \\ 
-##   3 & -0.14456 & -0.07411 & -0.83686 & 0.15954 & 0.38645 \\ 
+## 1 & 1.62592 & 0.86768 & -1.54087 & -0.53195 & 1.16835 \\ 
+##   2 & 0.77563 & 0.51198 & -0.17248 & -0.22808 & -1.09352 \\ 
+##   3 & -2.58062 & 0.26496 & -0.04096 & 0.92813 & 0.28004 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -775,7 +776,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 
 \begin{verbatim}
 ##     X1     X2     X3 
-##  1.096 -1.981  2.996
+##  1.064 -2.196  3.071
 \end{verbatim}
 
 \begin{Shaded}
@@ -785,7 +786,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  1.096 -1.981  2.996
+## [1]  1.064 -2.196  3.071
 \end{verbatim}
 
 可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看
@@ -798,7 +799,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 4.219e-15
+## [1] 3.331e-15
 \end{verbatim}
 
 另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:
@@ -824,7 +825,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mean relative difference: 6.947e-16"
+## [1] "Mean relative difference: 5.261e-16"
 \end{verbatim}
 
 下面考虑稍复杂的情况,取
@@ -850,18 +851,297 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 回到线性模型最小二乘的例子,由于目标函数存在导数,可以转化成一个Z估计量.取
 \(\psi_{\theta}\left(X_{i}\right)=m_{\theta}'\left(X_{i}\right)=2\boldsymbol{X}_{i}^{T} \left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)\)
 
+则\footnote{省略了常数系数.}
 \[
 \Psi_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n}\boldsymbol{X}_{i}^{T}  \left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right) =\boldsymbol{X} \boldsymbol{X}^{T} \boldsymbol{\theta}-\boldsymbol{X} \boldsymbol{Y}=0,
 \]
 
+进而得到参数估计值为:\(\hat{\boldsymbol{\theta}}=\left(\boldsymbol{X} \boldsymbol{X}^{T}\right)^{-1} \boldsymbol{X} \boldsymbol{Y}.\)
+
+通过下面的程序验证:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(quadprog)}
+\KeywordTok{all.equal}\NormalTok{(}\KeywordTok{solve.QP}\NormalTok{(}\DataTypeTok{Dmat =} \KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{X}\OperatorTok{/}\NormalTok{n, }\DataTypeTok{dvec =}\NormalTok{ (}\KeywordTok{t}\NormalTok{(Y)}\OperatorTok{%*%}\NormalTok{X)}\OperatorTok{/}\NormalTok{n, }\DataTypeTok{Amat =} \KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,p,p))}\OperatorTok{$}\NormalTok{solution, }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{solve}\NormalTok{(}\KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{X)}\OperatorTok{%*%}\KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{Y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+下面是一个迭代求解Z估计量的例子\footnote{目前只有单次二项分布的程序正确.完整的程序可以从\href{code/glm.R}{这里}下载.}.
+
+\textbf{补充哪一篇参考文献}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"code/glm.R"}\NormalTok{)}
+\NormalTok{n=}\DecValTok{500}
+\NormalTok{m1=}\DecValTok{2}
+\NormalTok{m2=}\DecValTok{2}
+\NormalTok{m3=}\DecValTok{2}
+\NormalTok{m=m1}\OperatorTok{+}\NormalTok{m2}\OperatorTok{+}\NormalTok{m3}
+\NormalTok{beta=}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{,m1),}\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,m2),}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,m3))}
+\NormalTok{X=}\KeywordTok{runif}\NormalTok{(n}\OperatorTok{*}\NormalTok{m,}\OperatorTok{-}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\NormalTok{X=}\KeywordTok{matrix}\NormalTok{(X,n,m)}
+\NormalTok{eta=X}\OperatorTok{%*%}\NormalTok{beta}
+\NormalTok{mu=}\DecValTok{1}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{eta))}
+
+\CommentTok{# Y~B(1,p)}
+\NormalTok{Y=}\KeywordTok{runif}\NormalTok{(n)}
+\NormalTok{Y[Y}\OperatorTok{>=}\NormalTok{mu]=}\DecValTok{0}
+\NormalTok{Y[Y}\OperatorTok{>}\DecValTok{0}\NormalTok{]=}\DecValTok{1}
+\KeywordTok{glm}\NormalTok{(Y}\OperatorTok{~}\NormalTok{X}\OperatorTok{+}\DecValTok{0}\NormalTok{,}\DataTypeTok{family=}\KeywordTok{binomial}\NormalTok{(}\DataTypeTok{link=}\StringTok{"logit"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:  glm(formula = Y ~ X + 0, family = binomial(link = "logit"))
+## 
+## Coefficients:
+##     X1      X2      X3      X4      X5      X6  
+## -1.007  -1.143  -0.244   0.233   0.830   1.062  
+## 
+## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
+## Null Deviance:       693 
+## Residual Deviance: 567   AIC: 579
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{myglm}\NormalTok{(Y,X,}\DataTypeTok{distribution  =} \StringTok{"binom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $theta
+##         [,1]
+## [1,] -0.7892
+## [2,] -0.9001
+## [3,] -0.1986
+## [4,]  0.1807
+## [5,]  0.6515
+## [6,]  0.8249
+## 
+## $steps
+## [1] 2
+\end{verbatim}
+
+可以看到和真值相差不大,但是很快收敛.
+
 \hypertarget{section-10}{%
 \chapter{假设检验}\label{section-10}}
+
+假设检验部分模拟相对简单,只需要在估计出参数值后,按照检验统计量的形式正确计算即可.主要难点在于构造检验统计量以及给出检验统计量的渐近分布.
+
+常用的办法是通过自助法(bootstrap)估计分布.
+
+我们以最简单的二项分布为例,说明一些假设检验中的概念.
+
+\begin{tabular}{r|r|r|r|r|r}
+\hline
+X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
+\hline
+0 & 0.0010 & 0.0001 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+1 & 0.0098 & 0.0016 & 0.0001 & 0.0000 & 0.0000\\
+\hline
+2 & 0.0439 & 0.0106 & 0.0014 & 0.0001 & 0.0000\\
+\hline
+3 & 0.1172 & 0.0425 & 0.0090 & 0.0008 & 0.0000\\
+\hline
+4 & 0.2051 & 0.1115 & 0.0368 & 0.0055 & 0.0001\\
+\hline
+5 & 0.2461 & 0.2007 & 0.1029 & 0.0264 & 0.0015\\
+\hline
+6 & 0.2051 & 0.2508 & 0.2001 & 0.0881 & 0.0112\\
+\hline
+7 & 0.1172 & 0.2150 & 0.2668 & 0.2013 & 0.0574\\
+\hline
+8 & 0.0439 & 0.1209 & 0.2335 & 0.3020 & 0.1937\\
+\hline
+9 & 0.0098 & 0.0403 & 0.1211 & 0.2684 & 0.3874\\
+\hline
+10 & 0.0010 & 0.0060 & 0.0282 & 0.1074 & 0.3487\\
+\hline
+\end{tabular}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+显著水平=第一类错误=\(\alpha\):为图中红色区域的面积
+
+第二类错误=\(\beta\):为图中蓝色区域的面积
+
+功效=势=power=\(1- \beta\):为图中蓝色曲线下空白面积
+
+检验的相合性:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  在\(H_0\)下, 拒绝概率(size)收敛到\(\alpha.\)
+\item
+  在\(H_1\)下, 拒绝概率(power)收敛到\(1.\)
+\end{enumerate}
 
 \hypertarget{section-11}{%
 \chapter{进阶技巧}\label{section-11}}
 
+程序的可读性和执行效率是两个很重要的要求.这一章主要介绍如何提高这两点.
+
 \hypertarget{apply}{%
 \section{apply函数族}\label{apply}}
+
+\textbf{apply并不能提高执行效率,只能使代码简洁易读.}
+
+详细的介绍可以在\href{http://blog.fens.me/r-apply/}{apply函数族介绍}查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, tapply,}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [,1] [,2] [,3]
+## 1    4   12   20
+## 2    6   14   22
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, tapply,}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DataTypeTok{each=}\DecValTok{2}\NormalTok{), sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [,1] [,2] [,3]
+## 1    3   11   19
+## 2    7   15   23
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{array}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{24}\NormalTok{,}\DataTypeTok{dim =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{))}
+\NormalTok{a}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3]
+## [1,]    7    9   11
+## [2,]    8   10   12
+## 
+## , , 3
+## 
+##      [,1] [,2] [,3]
+## [1,]   13   15   17
+## [2,]   14   16   18
+## 
+## , , 4
+## 
+##      [,1] [,2] [,3]
+## [1,]   19   21   23
+## [2,]   20   22   24
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(a,}\DecValTok{1}\NormalTok{,sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 144 156
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(a,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{),sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    3   15   27   39
+## [2,]    7   19   31   43
+## [3,]   11   23   35   47
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(a,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{),tapply,}\KeywordTok{rep}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{),}\DecValTok{2}\NormalTok{), sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , 1
+## 
+##    [,1] [,2]
+## -2   26   28
+## -1   14   16
+## 
+## , , 2
+## 
+##    [,1] [,2]
+## -2   30   32
+## -1   18   20
+## 
+## , , 3
+## 
+##    [,1] [,2]
+## -2   34   36
+## -1   22   24
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{aperm}\NormalTok{(a,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    7   13   19
+## [2,]    3    9   15   21
+## [3,]    5   11   17   23
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    2    8   14   20
+## [2,]    4   10   16   22
+## [3,]    6   12   18   24
+\end{verbatim}
 
 \hypertarget{section-12}{%
 \section{并行}\label{section-12}}

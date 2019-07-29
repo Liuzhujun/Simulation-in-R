@@ -1,2 +1,58 @@
 # 假设检验
 
+假设检验部分模拟相对简单,只需要在估计出参数值后,按照检验统计量的形式正确计算即可.主要难点在于构造检验统计量以及给出检验统计量的渐近分布.
+
+常用的办法是通过自助法(bootstrap)估计分布.
+
+
+我们以最简单的二项分布为例,说明一些假设检验中的概念.
+
+
+```{r echo=FALSE}
+#假设检验
+n = 10
+p <- seq(0.5,0.9,by=0.1)
+tab <- matrix(0,n+1,length(p)+1)
+
+for (i in 0:n) {
+  tab[i+1,1] <- i
+  for (j in 1:length(p)) {
+    tab[i+1,j+1] = dbinom(i,n,p[j])
+    #choose(n,i)*p[j]^(i)*(1-p[j])^(n-i)
+  }
+}
+#print(xtable::xtable(t(tab),digits=3),type="html")
+colnames(tab)<-c("X",paste("p=",p,sep = ""))
+knitr::kable(tab)
+
+
+plot(1, 1, xlim = c(0,10),ylim = c(-0.1,0.5), type="n", axes=T, xlab="X",ylab="pdf")
+lines(0:10,tab[,2])
+text(5,tab[6,2]+0.01,"p=0.5")
+lines(0:10,tab[,3],col=5)
+text(6,tab[7,3]+0.01,"p=0.6",col = 5)
+lines(0:10,tab[,4],col=2)
+text(7,tab[8,4]+0.01,"p=0.7",col = 2)
+lines(0:10,tab[,5],col=3)
+text(8,tab[9,5]+0.01,"p=0.8",col = 3)
+lines(0:10,tab[,6],col=4)
+text(9,tab[10,6]+0.01,"p=0.9",col = 4)
+text(8,-0.05,expression(C[n]))
+#绘制阴影
+polygon(c(8,8,9,10),c(0,tab[9,2],tab[10,2],0),col=rgb(1,0,0,alpha = "0.5"),border=NA)
+polygon(c(8,8,7,6,5),c(0,tab[9,6],tab[8,6],tab[7,6],tab[6,6]),col=rgb(0,0,1,alpha = "0.5"),border=NA)
+
+```
+
+显著水平=第一类错误=$\alpha$:为图中红色区域的面积
+
+第二类错误=$\beta$:为图中蓝色区域的面积
+
+功效=势=power=$1- \beta$:为图中蓝色曲线下空白面积
+
+
+检验的相合性:
+
+1. 在$H_0$下, 拒绝概率(size)收敛到$\alpha.$
+2. 在$H_1$下, 拒绝概率(power)收敛到$1.$
+
