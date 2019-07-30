@@ -36,6 +36,8 @@ lapply(c(), function(pkg) {
 
 [W3Cschool](https://www.w3cschool.cn/r/r_overview.html)
 
+[Advanced R](https://adv-r.hadley.nz)
+
 这里只是总结一些统计模拟中遇到的问题,以及实用的技巧.
 
 

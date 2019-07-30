@@ -6,14 +6,25 @@
 
 **apply并不能提高执行效率,只能使代码简洁易读.**
 
-详细的介绍可以在[apply函数族介绍](http://blog.fens.me/r-apply/)查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:
+详细的介绍可以在[apply函数族介绍](http://blog.fens.me/r-apply/)查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法.
 
+
+对矩阵按列进行操作,每列的奇数项求和,偶数项求和:
 ```{r}
 m <- matrix(1:12,4,3)
 m
 apply(m, 2, tapply,rep(1:2,2), sum)
+```
+
+
+对矩阵按列进行操作,每列前两项求和,后两项求和:
+
+```{r}
 apply(m, 2, tapply,rep(1:2,each=2), sum)
 ```
+
+
+下面看一个3维情况的例子.
 
 
 
@@ -21,14 +32,176 @@ apply(m, 2, tapply,rep(1:2,each=2), sum)
 ```{r}
 a <- array(1:24,dim = c(2,3,4))
 a
-apply(a,1,sum)
-apply(a,c(2,3),sum)
-apply(a,c(1,2),tapply,rep(c(-1,-2),2), sum)
-aperm(a,c(2,3,1))
-
 ```
+固定1个维度,对另外2个维度求和:
+
+```{r}
+apply(a,1,sum)
+```
+这样看起来不太直观,我们利用aperm函数调整数组的维度顺序:
+```{r}
+aperm(a,c(2,3,1))
+```
+
+固定2个维度,对1个维度求和:
+
+```{r}
+apply(a,c(2,3),sum)
+```
+
+固定2个维度,对1个维度分组求和:
+```{r}
+apply(a,c(1,2),tapply,rep(c(-1,-2),2), sum)
+```
+对第三个维度奇数项、偶数项分别求和(奇数项是-1组,偶数项是-2组).
 
 ## 并行
 
 
+```{r,cache=TRUE, cache.path="code/cache/"}
+source("/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R")
+library("foreach")
+library("doParallel")
+beta0 = c(1,-2,3)
+N = c(50,100,200)
+distribution= c(rnorm,rcauchy)
+SIM = 1000
+tstart=Sys.time()
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+result <- foreach(n=N,.combine = rbind) %:%
+  foreach(dst=distribution,.combine = c) %:%
+  foreach(i=1:SIM,.combine = '+',
+          .packages = c("MASS") )%dopar%{
+            sim_single(n,beta0,SLP=FALSE,mydist = dst)
+          }
+stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+result/SIM
+```
+
+
+把申请cluster的命令去掉,程序就会按串行执行
+```{r ,cache=TRUE, cache.path="code/cache/"}
+source("code/parallel-demo.R")
+library("foreach")
+library("doParallel")
+beta0 =  c(1,-2,3)
+N = c(50,100,200)
+distribution= c(rnorm,rcauchy)
+SIM = 1000
+tstart=Sys.time()
+#cl <- makeCluster(detectCores())
+#registerDoParallel(cl)
+result <- foreach(n=N,.combine = rbind) %:%
+  foreach(dst=distribution,.combine = c) %:%
+  foreach(i=1:SIM,.combine = '+',
+          .packages = c("MASS") )%do%{
+            sim_single(n,beta0,SLP=FALSE,mydist = dst)
+          }
+#stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+result/SIM
+```
+
+
+
+可以看到,执行时间相差并不多.当我们延长单次模拟的时间
+
+```{r ,cache=TRUE, cache.path="code/cache/"}
+source("/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R")
+library("foreach")
+library("doParallel")
+beta0 = c(1,-2,3)
+N = c(50,100,200)
+distribution= c(rnorm,rcauchy)
+SIM = 500
+tstart=Sys.time()
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+result <- foreach(n=N,.combine = rbind) %:%
+  foreach(dst=distribution,.combine = c) %:%
+  foreach(i=1:SIM,.combine = '+',
+          .packages = c("MASS") )%dopar%{
+            sim_single(n,beta0,SLP=TRUE,mydist = dst)
+          }
+stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+result/SIM
+```
+
+
+```{r ,cache=TRUE, cache.path="code/cache/"}
+source("code/parallel-demo.R")
+library("foreach")
+library("doParallel")
+beta0 =  c(1,-2,3)
+N = c(50,100,200)
+distribution= c(rnorm,rcauchy)
+SIM = 500
+tstart=Sys.time()
+#cl <- makeCluster(detectCores())
+#registerDoParallel(cl)
+result <- foreach(n=N,.combine = rbind) %:%
+  foreach(dst=distribution,.combine = c) %:%
+  foreach(i=1:SIM,.combine = '+',
+          .packages = c("MASS") )%do%{
+            sim_single(n,beta0,SLP=TRUE,mydist = dst)
+          }
+#stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+result/SIM
+```
+
+
 ## Rcpp
+
+
+
+
+
+[Rcpp文档](https://teuder.github.io/rcpp4everyone_en/)
+
+[如何改写R程序](https://adv-r.hadley.nz/rcpp.html)
+
+
+[Rcpp已提供的分布函数](https://teuder.github.io/rcpp4everyone_en/220_dpqr_functions.html#list-of-probability-distribution-functions)
+
+
+
+```{r}
+Rcpp::sourceCpp('code/Rcpp-demo.cpp')
+
+m = 20000
+n = 1000
+
+X <- matrix(rnorm(m*n),m,n)
+
+col_mean(X) -> l1
+mean_R(X) -> l2
+all.equal(l1,l2)
+
+colMeans(X) -> l3
+all.equal(l1,l3)
+
+mean_apply(X) -> l4
+all.equal(l1,l4)
+
+bench::mark(
+  col_mean(X),
+  colMeans(X),
+  mean_R(X),
+  apply(X, 2, mean),
+  check = FALSE,relative = TRUE
+)
+```
+
+
+
+### RcppParallel
+
+[官方文档](https://rcppcore.github.io/RcppParallel/index.html)

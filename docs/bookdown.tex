@@ -172,7 +172,7 @@
 
 \title{R中的统计模拟}
 \author{wang}
-\date{2019-07-29}
+\date{2019-07-30}
 
 \begin{document}
 \maketitle
@@ -205,6 +205,8 @@
 
 \href{https://www.w3cschool.cn/r/r_overview.html}{W3Cschool}
 
+\href{https://adv-r.hadley.nz}{Advanced R}
+
 这里只是总结一些统计模拟中遇到的问题,以及实用的技巧.
 
 \hypertarget{section-1}{%
@@ -232,42 +234,47 @@
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets 
-## [6] methods   base     
+## [1] parallel  stats     graphics  grDevices utils    
+## [6] datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] MASS_7.3-51.4  quadprog_1.5-7
+## [1] doParallel_1.0.14 iterators_1.0.10 
+## [3] foreach_1.4.4     MASS_7.3-51.4    
+## [5] quadprog_1.5-7   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] tidyselect_0.2.5   xfun_0.7          
 ##  [3] Rook_1.1-1         purrr_0.3.2       
 ##  [5] colorspace_1.4-1   vctrs_0.2.0       
 ##  [7] htmltools_0.3.6    viridisLite_0.3.0 
-##  [9] yaml_2.2.0         XML_3.98-1.20     
-## [11] rlang_0.4.0        pillar_1.4.1      
-## [13] glue_1.3.1         RColorBrewer_1.1-2
-## [15] plyr_1.8.4         stringr_1.4.0     
-## [17] munsell_0.5.0      gtable_0.3.0      
-## [19] visNetwork_2.0.7   htmlwidgets_1.3   
-## [21] evaluate_0.14      knitr_1.23        
-## [23] DiagrammeR_1.0.1   highr_0.8         
-## [25] Rcpp_1.0.1         xtable_1.8-4      
-## [27] readr_1.3.1        backports_1.1.4   
-## [29] scales_1.0.0       jsonlite_1.6      
-## [31] rgexf_0.15.3       gridExtra_2.3     
-## [33] brew_1.0-6         ggplot2_3.1.1     
-## [35] hms_0.5.0          digest_0.6.19     
-## [37] stringi_1.4.3      bookdown_0.11     
-## [39] dplyr_0.8.1        grid_3.6.0        
-## [41] influenceR_0.1.0   tools_3.6.0       
-## [43] magrittr_1.5       lazyeval_0.2.2    
-## [45] tibble_2.1.3       crayon_1.3.4      
-## [47] tidyr_0.8.3        pkgconfig_2.0.2   
-## [49] zeallot_0.1.0      downloader_0.4    
-## [51] assertthat_0.2.1   rmarkdown_1.13    
-## [53] rstudioapi_0.10    viridis_0.5.1     
-## [55] R6_2.4.0           igraph_1.2.4.1    
-## [57] compiler_3.6.0
+##  [9] yaml_2.2.0         utf8_1.1.4        
+## [11] XML_3.98-1.20      rlang_0.4.0       
+## [13] pillar_1.4.2       glue_1.3.1        
+## [15] RColorBrewer_1.1-2 plyr_1.8.4        
+## [17] stringr_1.4.0      munsell_0.5.0     
+## [19] gtable_0.3.0       visNetwork_2.0.7  
+## [21] htmlwidgets_1.3    bench_1.0.2.9000  
+## [23] codetools_0.2-16   evaluate_0.14     
+## [25] knitr_1.23         DiagrammeR_1.0.1  
+## [27] fansi_0.4.0        profmem_0.5.0     
+## [29] highr_0.8          Rcpp_1.0.1        
+## [31] xtable_1.8-4       readr_1.3.1       
+## [33] backports_1.1.4    scales_1.0.0      
+## [35] jsonlite_1.6       rgexf_0.15.3      
+## [37] gridExtra_2.3      brew_1.0-6        
+## [39] ggplot2_3.1.1      hms_0.5.0         
+## [41] digest_0.6.19      stringi_1.4.3     
+## [43] bookdown_0.11      dplyr_0.8.1       
+## [45] grid_3.6.0         influenceR_0.1.0  
+## [47] cli_1.1.0          tools_3.6.0       
+## [49] magrittr_1.5       lazyeval_0.2.2    
+## [51] tibble_2.1.3       crayon_1.3.4      
+## [53] tidyr_0.8.3        pkgconfig_2.0.2   
+## [55] zeallot_0.1.0      downloader_0.4    
+## [57] assertthat_0.2.1   rmarkdown_1.13    
+## [59] rstudioapi_0.10    viridis_0.5.1     
+## [61] R6_2.4.0           igraph_1.2.4.1    
+## [63] compiler_3.6.0
 \end{verbatim}
 
 \hypertarget{author}{%
@@ -500,7 +507,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.435
+## [1] 1.159
 \end{verbatim}
 
 关键点:
@@ -525,7 +532,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 15.06
+## [1] 34.79
 \end{verbatim}
 
 这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.
@@ -632,7 +639,7 @@ newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.872
+## [1] 0.7633
 \end{verbatim}
 
 通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解\footnote{省略了常数系数.}.
@@ -677,16 +684,16 @@ R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章
 
 \begin{verbatim}
 ## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Mon Jul 29 09:57:25 2019
+## % Tue Jul 30 21:53:20 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  & 1 & 2 & 3 & 4 & 5 \\ 
 ##   \hline
-## 1 & 1.62592 & 0.86768 & -1.54087 & -0.53195 & 1.16835 \\ 
-##   2 & 0.77563 & 0.51198 & -0.17248 & -0.22808 & -1.09352 \\ 
-##   3 & -2.58062 & 0.26496 & -0.04096 & 0.92813 & 0.28004 \\ 
+## 1 & -0.49044 & -0.23557 & 0.22505 & 1.36648 & 0.24646 \\ 
+##   2 & 0.83756 & 0.96580 & -1.45518 & 1.28176 & 0.21752 \\ 
+##   3 & 0.10801 & 0.58912 & -0.74446 & -1.25393 & 0.57356 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -776,7 +783,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 
 \begin{verbatim}
 ##     X1     X2     X3 
-##  1.064 -2.196  3.071
+##  1.006 -1.970  2.903
 \end{verbatim}
 
 \begin{Shaded}
@@ -786,7 +793,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  1.064 -2.196  3.071
+## [1]  1.006 -1.970  2.903
 \end{verbatim}
 
 可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看
@@ -799,7 +806,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 3.331e-15
+## [1] 1.332e-15
 \end{verbatim}
 
 另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:
@@ -825,7 +832,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mean relative difference: 5.261e-16"
+## [1] "Mean relative difference: 2.266e-16"
 \end{verbatim}
 
 下面考虑稍复杂的情况,取
@@ -902,12 +909,14 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 ## Call:  glm(formula = Y ~ X + 0, family = binomial(link = "logit"))
 ## 
 ## Coefficients:
-##     X1      X2      X3      X4      X5      X6  
-## -1.007  -1.143  -0.244   0.233   0.830   1.062  
+##       X1        X2        X3        X4        X5  
+## -0.99152  -1.00688   0.18804   0.00979   1.18404  
+##       X6  
+##  1.08538  
 ## 
 ## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
 ## Null Deviance:       693 
-## Residual Deviance: 567   AIC: 579
+## Residual Deviance: 565   AIC: 577
 \end{verbatim}
 
 \begin{Shaded}
@@ -918,16 +927,16 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 
 \begin{verbatim}
 ## $theta
-##         [,1]
-## [1,] -0.7892
-## [2,] -0.9001
-## [3,] -0.1986
-## [4,]  0.1807
-## [5,]  0.6515
-## [6,]  0.8249
+##          [,1]
+## [1,] -1.07410
+## [2,] -1.10161
+## [3,]  0.13419
+## [4,] -0.03074
+## [5,]  1.31236
+## [6,]  1.21068
 ## 
 ## $steps
-## [1] 2
+## [1] 3
 \end{verbatim}
 
 可以看到和真值相差不大,但是很快收敛.
@@ -998,7 +1007,9 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 
 \textbf{apply并不能提高执行效率,只能使代码简洁易读.}
 
-详细的介绍可以在\href{http://blog.fens.me/r-apply/}{apply函数族介绍}查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:
+详细的介绍可以在\href{http://blog.fens.me/r-apply/}{apply函数族介绍}查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法.
+
+对矩阵按列进行操作,每列的奇数项求和,偶数项求和:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1027,6 +1038,8 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 ## 2    6   14   22
 \end{verbatim}
 
+对矩阵按列进行操作,每列前两项求和,后两项求和:
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, tapply,}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DataTypeTok{each=}\DecValTok{2}\NormalTok{), sum)}
@@ -1038,6 +1051,8 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 ## 1    3   11   19
 ## 2    7   15   23
 \end{verbatim}
+
+下面看一个3维情况的例子.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1072,6 +1087,8 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 ## [2,]   20   22   24
 \end{verbatim}
 
+固定1个维度,对另外2个维度求和:
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{apply}\NormalTok{(a,}\DecValTok{1}\NormalTok{,sum)}
@@ -1081,6 +1098,32 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \begin{verbatim}
 ## [1] 144 156
 \end{verbatim}
+
+这样看起来不太直观,我们利用aperm函数调整数组的维度顺序:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{aperm}\NormalTok{(a,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    7   13   19
+## [2,]    3    9   15   21
+## [3,]    5   11   17   23
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    2    8   14   20
+## [2,]    4   10   16   22
+## [3,]    6   12   18   24
+\end{verbatim}
+
+固定2个维度,对1个维度求和:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1094,6 +1137,8 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 ## [2,]    7   19   31   43
 ## [3,]   11   23   35   47
 \end{verbatim}
+
+固定2个维度,对1个维度分组求和:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1121,33 +1166,279 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 ## -1   22   24
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{aperm}\NormalTok{(a,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## , , 1
-## 
-##      [,1] [,2] [,3] [,4]
-## [1,]    1    7   13   19
-## [2,]    3    9   15   21
-## [3,]    5   11   17   23
-## 
-## , , 2
-## 
-##      [,1] [,2] [,3] [,4]
-## [1,]    2    8   14   20
-## [2,]    4   10   16   22
-## [3,]    6   12   18   24
-\end{verbatim}
+对第三个维度奇数项、偶数项分别求和(奇数项是-1组,偶数项是-2组).
 
 \hypertarget{section-12}{%
 \section{并行}\label{section-12}}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
+\NormalTok{beta0 =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{N =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{200}\NormalTok{)}
+\NormalTok{distribution=}\StringTok{ }\KeywordTok{c}\NormalTok{(rnorm,rcauchy)}
+\NormalTok{SIM =}\StringTok{ }\DecValTok{1000}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{cl <-}\StringTok{ }\KeywordTok{makeCluster}\NormalTok{(}\KeywordTok{detectCores}\NormalTok{())}
+\KeywordTok{registerDoParallel}\NormalTok{(cl)}
+\NormalTok{result <-}\StringTok{ }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{n=}\NormalTok{N,}\DataTypeTok{.combine =}\NormalTok{ rbind) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{dst=}\NormalTok{distribution,}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{SIM,}\DataTypeTok{.combine =} \StringTok{'+'}\NormalTok{,}
+          \DataTypeTok{.packages =} \KeywordTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{) )}\OperatorTok{%dopar%}\NormalTok{\{}
+            \KeywordTok{sim_single}\NormalTok{(n,beta0,}\DataTypeTok{SLP=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{mydist =}\NormalTok{ dst)}
+\NormalTok{          \}}
+\KeywordTok{stopImplicitCluster}\NormalTok{()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 3.3 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{result}\OperatorTok{/}\NormalTok{SIM}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]   [,2]  [,3]    [,4]   [,5]  [,6]
+## result.1 1.0041 -2.002 3.003  1.0672 -3.296 2.988
+## result.2 1.0004 -2.003 3.000  0.7639 -4.966 4.515
+## result.3 0.9998 -2.003 3.002 -2.0400 -5.193 3.312
+\end{verbatim}
+
+把申请cluster的命令去掉,程序就会按串行执行
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"code/parallel-demo.R"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
+\NormalTok{beta0 =}\StringTok{  }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{N =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{200}\NormalTok{)}
+\NormalTok{distribution=}\StringTok{ }\KeywordTok{c}\NormalTok{(rnorm,rcauchy)}
+\NormalTok{SIM =}\StringTok{ }\DecValTok{1000}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\CommentTok{#cl <- makeCluster(detectCores())}
+\CommentTok{#registerDoParallel(cl)}
+\NormalTok{result <-}\StringTok{ }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{n=}\NormalTok{N,}\DataTypeTok{.combine =}\NormalTok{ rbind) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{dst=}\NormalTok{distribution,}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{SIM,}\DataTypeTok{.combine =} \StringTok{'+'}\NormalTok{,}
+          \DataTypeTok{.packages =} \KeywordTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{) )}\OperatorTok{%do%}\NormalTok{\{}
+            \KeywordTok{sim_single}\NormalTok{(n,beta0,}\DataTypeTok{SLP=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{mydist =}\NormalTok{ dst)}
+\NormalTok{          \}}
+\CommentTok{#stopImplicitCluster()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 4.48 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{result}\OperatorTok{/}\NormalTok{SIM}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 1.0075 -1.998 3.002 0.5562 -3.824 4.650
+## result.2 1.0068 -2.005 2.999 2.4827 -1.803 2.670
+## result.3 0.9984 -1.998 2.996 3.1243 -1.106 4.368
+\end{verbatim}
+
+可以看到,执行时间相差并不多.当我们延长单次模拟的时间
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
+\NormalTok{beta0 =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{N =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{200}\NormalTok{)}
+\NormalTok{distribution=}\StringTok{ }\KeywordTok{c}\NormalTok{(rnorm,rcauchy)}
+\NormalTok{SIM =}\StringTok{ }\DecValTok{500}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{cl <-}\StringTok{ }\KeywordTok{makeCluster}\NormalTok{(}\KeywordTok{detectCores}\NormalTok{())}
+\KeywordTok{registerDoParallel}\NormalTok{(cl)}
+\NormalTok{result <-}\StringTok{ }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{n=}\NormalTok{N,}\DataTypeTok{.combine =}\NormalTok{ rbind) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{dst=}\NormalTok{distribution,}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{SIM,}\DataTypeTok{.combine =} \StringTok{'+'}\NormalTok{,}
+          \DataTypeTok{.packages =} \KeywordTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{) )}\OperatorTok{%dopar%}\NormalTok{\{}
+            \KeywordTok{sim_single}\NormalTok{(n,beta0,}\DataTypeTok{SLP=}\OtherTok{TRUE}\NormalTok{,}\DataTypeTok{mydist =}\NormalTok{ dst)}
+\NormalTok{          \}}
+\KeywordTok{stopImplicitCluster}\NormalTok{()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 8.721 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{result}\OperatorTok{/}\NormalTok{SIM}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]   [,2]  [,3]   [,4]   [,5]    [,6]
+## result.1 1.0044 -1.992 3.003  1.357 -2.021  4.7087
+## result.2 0.9971 -2.002 2.997 -2.295 -3.333 10.9902
+## result.3 0.9990 -1.999 2.998  3.591 -4.287 -0.1508
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{source}\NormalTok{(}\StringTok{"code/parallel-demo.R"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
+\NormalTok{beta0 =}\StringTok{  }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\NormalTok{N =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{200}\NormalTok{)}
+\NormalTok{distribution=}\StringTok{ }\KeywordTok{c}\NormalTok{(rnorm,rcauchy)}
+\NormalTok{SIM =}\StringTok{ }\DecValTok{500}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\CommentTok{#cl <- makeCluster(detectCores())}
+\CommentTok{#registerDoParallel(cl)}
+\NormalTok{result <-}\StringTok{ }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{n=}\NormalTok{N,}\DataTypeTok{.combine =}\NormalTok{ rbind) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{dst=}\NormalTok{distribution,}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%:%}
+\StringTok{  }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{SIM,}\DataTypeTok{.combine =} \StringTok{'+'}\NormalTok{,}
+          \DataTypeTok{.packages =} \KeywordTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{) )}\OperatorTok{%do%}\NormalTok{\{}
+            \KeywordTok{sim_single}\NormalTok{(n,beta0,}\DataTypeTok{SLP=}\OtherTok{TRUE}\NormalTok{,}\DataTypeTok{mydist =}\NormalTok{ dst)}
+\NormalTok{          \}}
+\CommentTok{#stopImplicitCluster()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 38.1 secs
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{result}\OperatorTok{/}\NormalTok{SIM}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 1.0014 -2.008 2.997 0.8161 -1.890 3.092
+## result.2 0.9983 -2.005 2.997 2.0198 -1.752 3.970
+## result.3 1.0034 -2.002 2.999 2.6520 -1.484 4.582
+\end{verbatim}
+
 \hypertarget{rcpp}{%
 \section{Rcpp}\label{rcpp}}
+
+\href{https://teuder.github.io/rcpp4everyone_en/}{Rcpp文档}
+
+\href{https://adv-r.hadley.nz/rcpp.html}{如何改写R程序}
+
+\href{https://teuder.github.io/rcpp4everyone_en/220_dpqr_functions.html\#list-of-probability-distribution-functions}{Rcpp已提供的分布函数}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Rcpp}\OperatorTok{::}\KeywordTok{sourceCpp}\NormalTok{(}\StringTok{'code/Rcpp-demo.cpp'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## > mean_R <- function(X) {
+## +     n = dim(X)[1]
+## +     m = dim(X)[2]
+## +     cm <- rep(0, m)
+## +     for (i in 1:n) {
+## +         cm = cm + X[i, ]
+## +     }
+## +    .... [TRUNCATED] 
+## 
+## > mean_apply <- function(X) return(apply(X, 2, mean))
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m =}\StringTok{ }\DecValTok{20000}
+\NormalTok{n =}\StringTok{ }\DecValTok{1000}
+
+\NormalTok{X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(m}\OperatorTok{*}\NormalTok{n),m,n)}
+
+\KeywordTok{col_mean}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l1}
+\KeywordTok{mean_R}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l2}
+\KeywordTok{all.equal}\NormalTok{(l1,l2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colMeans}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l3}
+\KeywordTok{all.equal}\NormalTok{(l1,l3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean_apply}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l4}
+\KeywordTok{all.equal}\NormalTok{(l1,l4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bench}\OperatorTok{::}\KeywordTok{mark}\NormalTok{(}
+  \KeywordTok{col_mean}\NormalTok{(X),}
+  \KeywordTok{colMeans}\NormalTok{(X),}
+  \KeywordTok{mean_R}\NormalTok{(X),}
+  \KeywordTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, mean),}
+  \DataTypeTok{check =} \OtherTok{FALSE}\NormalTok{,}\DataTypeTok{relative =} \OtherTok{TRUE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Some expressions had a GC in every iteration;
+## so filtering is disabled.
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 4 x 6
+##   expression          min median `itr/sec` mem_alloc
+##   <bch:expr>        <dbl>  <dbl>     <dbl>     <dbl>
+## 1 col_mean(X)        2.19   2.21      8.83      1.84
+## 2 colMeans(X)        1      1        19.7       1   
+## 3 mean_R(X)         15.7   16.0       1.24  30062.  
+## 4 apply(X, 2, mean) 19.8   19.9       1     49717.  
+## # ... with 1 more variable: `gc/sec` <dbl>
+\end{verbatim}
+
+\hypertarget{rcppparallel}{%
+\subsection{RcppParallel}\label{rcppparallel}}
+
+\href{https://rcppcore.github.io/RcppParallel/index.html}{官方文档}
 
 \cleardoublepage
 

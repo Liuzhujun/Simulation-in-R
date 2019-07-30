@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-29" />
+<meta name="date" content="2019-07-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -154,7 +154,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="section-11.html"><a href="section-11.html"><i class="fa fa-check"></i><b>4</b> 进阶技巧</a><ul>
 <li class="chapter" data-level="4.1" data-path="section-11.html"><a href="section-11.html#apply"><i class="fa fa-check"></i><b>4.1</b> apply函数族</a></li>
 <li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a></li>
-<li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a></li>
+<li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
+</ul></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
 <li class="chapter" data-level="A" data-path="sound.html"><a href="sound.html"><i class="fa fa-check"></i><b>A</b> 余音绕梁</a></li>
@@ -185,7 +187,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="apply" class="section level2">
 <h2><span class="header-section-number">4.1</span> apply函数族</h2>
 <p><strong>apply并不能提高执行效率,只能使代码简洁易读.</strong></p>
-<p>详细的介绍可以在<a href="http://blog.fens.me/r-apply/">apply函数族介绍</a>查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法:</p>
+<p>详细的介绍可以在<a href="http://blog.fens.me/r-apply/">apply函数族介绍</a>查看,其中给了一些简单的例子.下面演示一下稍微复杂的用法.</p>
+<p>对矩阵按列进行操作,每列的奇数项求和,偶数项求和:</p>
 <pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)
 m</code></pre>
 <pre><code>##      [,1] [,2] [,3]
@@ -197,10 +200,12 @@ m</code></pre>
 <pre><code>##   [,1] [,2] [,3]
 ## 1    4   12   20
 ## 2    6   14   22</code></pre>
+<p>对矩阵按列进行操作,每列前两项求和,后两项求和:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(m, <span class="dv">2</span>, tapply,<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dt">each=</span><span class="dv">2</span>), sum)</code></pre>
 <pre><code>##   [,1] [,2] [,3]
 ## 1    3   11   19
 ## 2    7   15   23</code></pre>
+<p>下面看一个3维情况的例子.</p>
 <pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">24</span>,<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))
 a</code></pre>
 <pre><code>## , , 1
@@ -226,13 +231,31 @@ a</code></pre>
 ##      [,1] [,2] [,3]
 ## [1,]   19   21   23
 ## [2,]   20   22   24</code></pre>
+<p>固定1个维度,对另外2个维度求和:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="dv">1</span>,sum)</code></pre>
 <pre><code>## [1] 144 156</code></pre>
+<p>这样看起来不太直观,我们利用aperm函数调整数组的维度顺序:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aperm</span>(a,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    7   13   19
+## [2,]    3    9   15   21
+## [3,]    5   11   17   23
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    2    8   14   20
+## [2,]    4   10   16   22
+## [3,]    6   12   18   24</code></pre>
+<p>固定2个维度,对1个维度求和:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),sum)</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4]
 ## [1,]    3   15   27   39
 ## [2,]    7   19   31   43
 ## [3,]   11   23   35   47</code></pre>
+<p>固定2个维度,对1个维度分组求和:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(a,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),tapply,<span class="kw">rep</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>),<span class="dv">2</span>), sum)</code></pre>
 <pre><code>## , , 1
 ## 
@@ -251,28 +274,168 @@ a</code></pre>
 ##    [,1] [,2]
 ## -2   34   36
 ## -1   22   24</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aperm</span>(a,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</code></pre>
-<pre><code>## , , 1
-## 
-##      [,1] [,2] [,3] [,4]
-## [1,]    1    7   13   19
-## [2,]    3    9   15   21
-## [3,]    5   11   17   23
-## 
-## , , 2
-## 
-##      [,1] [,2] [,3] [,4]
-## [1,]    2    8   14   20
-## [2,]    4   10   16   22
-## [3,]    6   12   18   24</code></pre>
+<p>对第三个维度奇数项、偶数项分别求和(奇数项是-1组,偶数项是-2组).</p>
 </div>
 <div id="section-12" class="section level2">
 <h2><span class="header-section-number">4.2</span> 并行</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">1000</span>
+tstart=<span class="kw">Sys.time</span>()
+cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
+<span class="kw">registerDoParallel</span>(cl)
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%dopar%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">FALSE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="kw">stopImplicitCluster</span>()
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 3.263 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
+## result.1 0.9931 -2.011 3.002  1.8628 -1.929 2.6343
+## result.2 1.0052 -1.994 3.002  0.5415 -2.317 2.8457
+## result.3 0.9991 -2.001 2.998 -1.1646 -3.088 0.3192</code></pre>
+<p>把申请cluster的命令去掉,程序就会按串行执行</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st">  </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">1000</span>
+tstart=<span class="kw">Sys.time</span>()
+<span class="co">#cl &lt;- makeCluster(detectCores())</span>
+<span class="co">#registerDoParallel(cl)</span>
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%do%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">FALSE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="co">#stopImplicitCluster()</span>
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 4.506 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]  [,4]     [,5]  [,6]
+## result.1 1.0044 -2.010 3.002 2.628 -1.97602 3.301
+## result.2 0.9954 -2.001 2.997 1.485  0.03896 2.462
+## result.3 0.9996 -1.999 2.999 1.010 -1.48373 2.245</code></pre>
+<p>可以看到,执行时间相差并不多.当我们延长单次模拟的时间</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">500</span>
+tstart=<span class="kw">Sys.time</span>()
+cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
+<span class="kw">registerDoParallel</span>(cl)
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%dopar%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">TRUE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="kw">stopImplicitCluster</span>()
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 8.412 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]    [,5]     [,6]
+## result.1 0.9886 -2.005 2.990 -3.322  0.6788  0.01409
+## result.2 1.0001 -2.001 3.004 20.656 -0.8309 -2.04607
+## result.3 0.9984 -2.000 2.999  2.155 -1.3706  4.08092</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st">  </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">500</span>
+tstart=<span class="kw">Sys.time</span>()
+<span class="co">#cl &lt;- makeCluster(detectCores())</span>
+<span class="co">#registerDoParallel(cl)</span>
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%do%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">TRUE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="co">#stopImplicitCluster()</span>
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 37 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]   [,6]
+## result.1 0.9949 -2.003 3.000   2.108  -3.205  3.468
+## result.2 0.9997 -1.996 3.003   1.012  -1.230  3.245
+## result.3 0.9985 -1.999 2.994 -66.104 -19.523 25.100</code></pre>
 </div>
 <div id="rcpp" class="section level2">
 <h2><span class="header-section-number">4.3</span> Rcpp</h2>
+<p><a href="https://teuder.github.io/rcpp4everyone_en/">Rcpp文档</a></p>
+<p><a href="https://adv-r.hadley.nz/rcpp.html">如何改写R程序</a></p>
+<p><a href="https://teuder.github.io/rcpp4everyone_en/220_dpqr_functions.html#list-of-probability-distribution-functions">Rcpp已提供的分布函数</a></p>
+<pre class="sourceCode r"><code class="sourceCode r">Rcpp<span class="op">::</span><span class="kw">sourceCpp</span>(<span class="st">&#39;code/Rcpp-demo.cpp&#39;</span>)</code></pre>
+<pre><code>## 
+## &gt; mean_R &lt;- function(X) {
+## +     n = dim(X)[1]
+## +     m = dim(X)[2]
+## +     cm &lt;- rep(0, m)
+## +     for (i in 1:n) {
+## +         cm = cm + X[i, ]
+## +     }
+## +    .... [TRUNCATED] 
+## 
+## &gt; mean_apply &lt;- function(X) return(apply(X, 2, mean))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">m =<span class="st"> </span><span class="dv">20000</span>
+n =<span class="st"> </span><span class="dv">1000</span>
+
+X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(m<span class="op">*</span>n),m,n)
+
+<span class="kw">col_mean</span>(X) -&gt;<span class="st"> </span>l1
+<span class="kw">mean_R</span>(X) -&gt;<span class="st"> </span>l2
+<span class="kw">all.equal</span>(l1,l2)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colMeans</span>(X) -&gt;<span class="st"> </span>l3
+<span class="kw">all.equal</span>(l1,l3)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean_apply</span>(X) -&gt;<span class="st"> </span>l4
+<span class="kw">all.equal</span>(l1,l4)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">bench<span class="op">::</span><span class="kw">mark</span>(
+  <span class="kw">col_mean</span>(X),
+  <span class="kw">colMeans</span>(X),
+  <span class="kw">mean_R</span>(X),
+  <span class="kw">apply</span>(X, <span class="dv">2</span>, mean),
+  <span class="dt">check =</span> <span class="ot">FALSE</span>,<span class="dt">relative =</span> <span class="ot">TRUE</span>
+)</code></pre>
+<pre><code>## Warning: Some expressions had a GC in every iteration;
+## so filtering is disabled.</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   expression          min median `itr/sec` mem_alloc
+##   &lt;bch:expr&gt;        &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 col_mean(X)        2.20   2.19     10.7       1.98
+## 2 colMeans(X)        1      1        23.3       1   
+## 3 mean_R(X)         11.2   11.5       2.00  30062.  
+## 4 apply(X, 2, mean) 22.4   23.3       1     49717.  
+## # … with 1 more variable: `gc/sec` &lt;dbl&gt;</code></pre>
+<div id="rcppparallel" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> RcppParallel</h3>
+<p><a href="https://rcppcore.github.io/RcppParallel/index.html">官方文档</a></p>
 
 
+</div>
 </div>
 </div>
 
