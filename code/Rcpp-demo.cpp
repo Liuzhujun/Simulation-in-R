@@ -38,5 +38,4 @@ mean_R <- function(X){
   }
   return( cm / n)
 }
-mean_apply <- function(X) return(apply(X, 2, mean))
 */

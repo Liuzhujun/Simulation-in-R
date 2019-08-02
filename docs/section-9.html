@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-30" />
+<meta name="date" content="2019-08-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a></li>
 <li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
+<li class="chapter" data-level="4.3.2" data-path="section-11.html"><a href="section-11.html#rcpparmadillo"><i class="fa fa-check"></i><b>4.3.2</b> RcppArmadillo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="section-11.html"><a href="section-11.html#rcppeigen"><i class="fa fa-check"></i><b>4.3.3</b> RcppEigen</a></li>
+<li class="chapter" data-level="4.3.4" data-path="section-11.html"><a href="section-11.html#xtensor"><i class="fa fa-check"></i><b>4.3.4</b> xtensor</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
@@ -219,17 +222,17 @@ X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnor
 Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
 <span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef <span class="op">==</span><span class="st"> </span><span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution</code></pre>
 <pre><code>##    X1    X2    X3 
-## FALSE  TRUE FALSE</code></pre>
+## FALSE FALSE FALSE</code></pre>
 <p>可以看到结果显示不相等,但是如果我们打印出来显示:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef</code></pre>
-<pre><code>##     X1     X2     X3 
-##  1.003 -2.312  2.870</code></pre>
+<pre><code>##      X1      X2      X3 
+##  0.8695 -2.1192  2.9856</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution</code></pre>
-<pre><code>## [1]  1.003 -2.312  2.870</code></pre>
+<pre><code>## [1]  0.8695 -2.1192  2.9856</code></pre>
 <p>可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">abs</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef <span class="op">-</span>
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution))</code></pre>
-<pre><code>## [1] 1.776e-15</code></pre>
+<pre><code>## [1] 1.11e-15</code></pre>
 <p>另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
@@ -238,7 +241,7 @@ Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+<
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
 ,<span class="dt">tolerance=</span><span class="fl">1e-20</span>)</code></pre>
-<pre><code>## [1] &quot;Mean relative difference: 4.587e-16&quot;</code></pre>
+<pre><code>## [1] &quot;Mean relative difference: 1.858e-16&quot;</code></pre>
 <p>下面考虑稍复杂的情况,取
 <span class="math inline">\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=\rho_{\tau}\left(y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)\)</span>,其中
 <span class="math inline">\(\rho_{\tau}(t)=t\left(\tau-I_{\{t&lt;0\}}\right)\)</span>.
@@ -288,24 +291,22 @@ Y[Y<span class="op">&gt;</span><span class="dv">0</span>]=<span class="dv">1</sp
 ## Call:  glm(formula = Y ~ X + 0, family = binomial(link = &quot;logit&quot;))
 ## 
 ## Coefficients:
-##       X1        X2        X3        X4        X5  
-## -0.62308  -0.91874   0.00572  -0.22238   0.60712  
-##       X6  
-##  0.99723  
+##     X1      X2      X3      X4      X5      X6  
+## -1.148  -1.112   0.128  -0.183   1.071   1.221  
 ## 
 ## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
 ## Null Deviance:       693 
-## Residual Deviance: 607   AIC: 619</code></pre>
+## Residual Deviance: 547   AIC: 559</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">myglm</span>(Y,X,<span class="dt">distribution  =</span> <span class="st">&quot;binom&quot;</span>)</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
 <pre><code>## $theta
-##           [,1]
-## [1,] -0.532007
-## [2,] -0.786593
-## [3,]  0.005437
-## [4,] -0.187935
-## [5,]  0.511442
-## [6,]  0.852706
+##          [,1]
+## [1,] -0.86821
+## [2,] -0.84426
+## [3,]  0.09939
+## [4,] -0.14086
+## [5,]  0.80079
+## [6,]  0.90642
 ## 
 ## $steps
 ## [1] 2</code></pre>

@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-07-30" />
+<meta name="date" content="2019-08-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -156,6 +156,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a></li>
 <li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
+<li class="chapter" data-level="4.3.2" data-path="section-11.html"><a href="section-11.html#rcpparmadillo"><i class="fa fa-check"></i><b>4.3.2</b> RcppArmadillo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="section-11.html"><a href="section-11.html#rcppeigen"><i class="fa fa-check"></i><b>4.3.3</b> RcppEigen</a></li>
+<li class="chapter" data-level="4.3.4" data-path="section-11.html"><a href="section-11.html#xtensor"><i class="fa fa-check"></i><b>4.3.4</b> xtensor</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
@@ -278,13 +281,14 @@ a</code></pre>
 </div>
 <div id="section-12" class="section level2">
 <h2><span class="header-section-number">4.2</span> 并行</h2>
+<p>单次模拟时间越长,重复次数越多,并行得到的提升越明显.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
 beta0 =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
 N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
 distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
-SIM =<span class="st"> </span><span class="dv">1000</span>
+SIM =<span class="st"> </span><span class="dv">500</span>
 tstart=<span class="kw">Sys.time</span>()
 cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
 <span class="kw">registerDoParallel</span>(cl)
@@ -297,12 +301,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="kw">stopImplicitCluster</span>()
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 3.263 secs</code></pre>
+<pre><code>## Time difference of 2.207 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
-## result.1 0.9931 -2.011 3.002  1.8628 -1.929 2.6343
-## result.2 1.0052 -1.994 3.002  0.5415 -2.317 2.8457
-## result.3 0.9991 -2.001 2.998 -1.1646 -3.088 0.3192</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]    [,5]  [,6]
+## result.1 0.9983 -2.000 3.000 0.9216 -0.9093 3.090
+## result.2 0.9955 -2.002 2.995 0.6595 -1.5407 3.007
+## result.3 0.9990 -2.000 3.001 1.2412 -1.7473 3.169</code></pre>
 <p>把申请cluster的命令去掉,程序就会按串行执行</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
@@ -310,6 +314,59 @@ t.end<span class="op">-</span>tstart</code></pre>
 beta0 =<span class="st">  </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
 N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
 distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">500</span>
+tstart=<span class="kw">Sys.time</span>()
+<span class="co">#cl &lt;- makeCluster(detectCores())</span>
+<span class="co">#registerDoParallel(cl)</span>
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%do%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">FALSE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="co">#stopImplicitCluster()</span>
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 2.307 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]     [,4]   [,5]   [,6]
+## result.1 0.9931 -1.992 2.989  1.74262 -2.241 11.342
+## result.2 0.9983 -2.004 2.996  1.98001 -2.152  2.860
+## result.3 1.0058 -2.001 2.995 -0.06368 -2.931  4.308</code></pre>
+<p>增加到1000次.</p>
+<p>并行:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
+SIM =<span class="st"> </span><span class="dv">1000</span>
+tstart=<span class="kw">Sys.time</span>()
+cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
+<span class="kw">registerDoParallel</span>(cl)
+result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">n=</span>N,<span class="dt">.combine =</span> rbind) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">dst=</span>distribution,<span class="dt">.combine =</span> c) <span class="op">%:%</span>
+<span class="st">  </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>SIM,<span class="dt">.combine =</span> <span class="st">&#39;+&#39;</span>,
+          <span class="dt">.packages =</span> <span class="kw">c</span>(<span class="st">&quot;MASS&quot;</span>) )<span class="op">%dopar%</span>{
+            <span class="kw">sim_single</span>(n,beta0,<span class="dt">SLP=</span><span class="ot">FALSE</span>,<span class="dt">mydist =</span> dst)
+          }
+<span class="kw">stopImplicitCluster</span>()
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 3.502 secs</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]  [,6]
+## result.1 0.9998 -1.997 2.994 -0.3434 -1.1216 3.154
+## result.2 0.9954 -2.002 2.999  1.8689 -1.4982 5.298
+## result.3 1.0007 -2.002 2.999 -1.1527  0.2845 2.049</code></pre>
+<p>串行:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+beta0 =<span class="st">  </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>)
+N =<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>,<span class="dv">100</span>,<span class="dv">200</span>)
+distribution=<span class="st"> </span><span class="kw">c</span>(rnorm,rcauchy)
 SIM =<span class="st"> </span><span class="dv">1000</span>
 tstart=<span class="kw">Sys.time</span>()
 <span class="co">#cl &lt;- makeCluster(detectCores())</span>
@@ -323,13 +380,14 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="co">#stopImplicitCluster()</span>
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 4.506 secs</code></pre>
+<pre><code>## Time difference of 4.449 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]  [,4]     [,5]  [,6]
-## result.1 1.0044 -2.010 3.002 2.628 -1.97602 3.301
-## result.2 0.9954 -2.001 2.997 1.485  0.03896 2.462
-## result.3 0.9996 -1.999 2.999 1.010 -1.48373 2.245</code></pre>
-<p>可以看到,执行时间相差并不多.当我们延长单次模拟的时间</p>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]   [,5]   [,6]
+## result.1 1.0074 -1.999 3.006 -0.553 -2.663 1.2641
+## result.2 1.0008 -1.999 3.000  1.595 -2.163 3.2488
+## result.3 0.9971 -1.997 3.002  3.195 -4.645 0.8559</code></pre>
+<p>增加每次模拟的计算量,延长单次模拟的时间.</p>
+<p>并行:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
@@ -349,12 +407,13 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="kw">stopImplicitCluster</span>()
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 8.412 secs</code></pre>
+<pre><code>## Time difference of 8.666 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]   [,4]    [,5]     [,6]
-## result.1 0.9886 -2.005 2.990 -3.322  0.6788  0.01409
-## result.2 1.0001 -2.001 3.004 20.656 -0.8309 -2.04607
-## result.3 0.9984 -2.000 2.999  2.155 -1.3706  4.08092</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]   [,5]    [,6]
+## result.1 0.9980 -1.995 3.001 0.6926 -2.566   2.055
+## result.2 1.0029 -1.997 3.000 0.6737 -2.219   2.721
+## result.3 0.9967 -1.998 3.003 4.0327 18.921 -21.664</code></pre>
+<p>串行:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
@@ -374,12 +433,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="co">#stopImplicitCluster()</span>
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 37 secs</code></pre>
+<pre><code>## Time difference of 38.06 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]   [,6]
-## result.1 0.9949 -2.003 3.000   2.108  -3.205  3.468
-## result.2 0.9997 -1.996 3.003   1.012  -1.230  3.245
-## result.3 0.9985 -1.999 2.994 -66.104 -19.523 25.100</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 0.9934 -2.014 2.992 -1.523 -4.507 3.373
+## result.2 1.0101 -2.003 3.004  1.681 -2.061 4.212
+## result.3 1.0010 -1.998 3.003 -2.417  4.039 5.871</code></pre>
 </div>
 <div id="rcpp" class="section level2">
 <h2><span class="header-section-number">4.3</span> Rcpp</h2>
@@ -395,11 +454,9 @@ t.end<span class="op">-</span>tstart</code></pre>
 ## +     for (i in 1:n) {
 ## +         cm = cm + X[i, ]
 ## +     }
-## +    .... [TRUNCATED] 
-## 
-## &gt; mean_apply &lt;- function(X) return(apply(X, 2, mean))</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">m =<span class="st"> </span><span class="dv">20000</span>
-n =<span class="st"> </span><span class="dv">1000</span>
+## +    .... [TRUNCATED]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">m =<span class="st"> </span><span class="dv">200</span>
+n =<span class="st"> </span><span class="dv">100</span>
 
 X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(m<span class="op">*</span>n),m,n)
 
@@ -410,7 +467,7 @@ X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colMeans</span>(X) -&gt;<span class="st"> </span>l3
 <span class="kw">all.equal</span>(l1,l3)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean_apply</span>(X) -&gt;<span class="st"> </span>l4
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(X, <span class="dv">2</span>, mean) -&gt;<span class="st"> </span>l4
 <span class="kw">all.equal</span>(l1,l4)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">bench<span class="op">::</span><span class="kw">mark</span>(
@@ -419,20 +476,29 @@ X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">
   <span class="kw">mean_R</span>(X),
   <span class="kw">apply</span>(X, <span class="dv">2</span>, mean),
   <span class="dt">check =</span> <span class="ot">FALSE</span>,<span class="dt">relative =</span> <span class="ot">TRUE</span>
-)</code></pre>
-<pre><code>## Warning: Some expressions had a GC in every iteration;
-## so filtering is disabled.</code></pre>
-<pre><code>## # A tibble: 4 x 6
-##   expression          min median `itr/sec` mem_alloc
-##   &lt;bch:expr&gt;        &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 col_mean(X)        2.20   2.19     10.7       1.98
-## 2 colMeans(X)        1      1        23.3       1   
-## 3 mean_R(X)         11.2   11.5       2.00  30062.  
-## 4 apply(X, 2, mean) 22.4   23.3       1     49717.  
-## # … with 1 more variable: `gc/sec` &lt;dbl&gt;</code></pre>
+)-&gt;results
+ggplot2<span class="op">::</span><span class="kw">autoplot</span>(results)</code></pre>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <div id="rcppparallel" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> RcppParallel</h3>
+<p>C++并行库</p>
 <p><a href="https://rcppcore.github.io/RcppParallel/index.html">官方文档</a></p>
+<p>下面是三个关于线性代数的库,<a href="https://gist.github.com/wolfv/ca3ac2b24e1daf70f85eac18ec7b1b8f" class="uri">https://gist.github.com/wolfv/ca3ac2b24e1daf70f85eac18ec7b1b8f</a>
+这个链接测试结果表明xtensor最快</p>
+</div>
+<div id="rcpparmadillo" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> RcppArmadillo</h3>
+<p>线性代数库
+<a href="https://cran.r-project.org/web/packages/RcppArmadillo/RcppArmadillo.pdf">官方文档</a></p>
+</div>
+<div id="rcppeigen" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> RcppEigen</h3>
+<p>线性代数库(更快一点,但是不友好)
+<a href="https://cran.r-project.org/web/packages/RcppEigen/RcppEigen.pdf">官方文档</a></p>
+</div>
+<div id="xtensor" class="section level3">
+<h3><span class="header-section-number">4.3.4</span> xtensor</h3>
+<p><a href="https://github.com/QuantStack/xtensor-r">GitHub地址</a></p>
 
 
 </div>
