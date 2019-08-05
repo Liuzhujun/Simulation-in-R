@@ -172,7 +172,7 @@
 
 \title{R中的统计模拟}
 \author{wang}
-\date{2019-08-02}
+\date{2019-08-05}
 
 \begin{document}
 \maketitle
@@ -491,7 +491,7 @@ M 作为权重矩阵, 这种形式的矩阵可以利用克罗内克积 (Kronecke
 
 当我们拟合好一个模型时,下一步要做的就是评价模型好坏或者对新数据预测.这都需要将新的输入值带入模型中计算,得到预测值.区别只是有没有真值对比.对于简单模型,我们当然可以直接提取系数,自己计算预测值,但是当模型复杂时(比如时间序列模型),就不太容易操作.
 
-R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计效果是不一样的.我们要清楚自己的方法对于什么样的数据应该有较好的结果,什么样的数据可能估计效果不好.对此设计不同代表性的实验.这也给阅读文献模拟部分添加了任务,思考作者为什么用这种方式产生数据、设置参数.},编写模型都会提供summary、predict、plot等函数方便调用.但是在学习过程中发现经常会不小心错误使用,特此单独说明一下.下面以线性模型为例,先看正确的使用方法:
+R借助泛型函数\footnote{程序在 \href{\%22code/Rcpp-demo.cpp\%22}{这里} 查看,其中最后被/***R */夹住的部分是R程序,每次加载后会自动执行,方便调试.},编写模型都会提供summary、predict、plot等函数方便调用.但是在学习过程中发现经常会不小心错误使用,特此单独说明一下.下面以线性模型为例,先看正确的使用方法:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -507,7 +507,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.646
+## [1] 1.02
 \end{verbatim}
 
 关键点:
@@ -532,7 +532,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 25.15
+## [1] 21.74
 \end{verbatim}
 
 这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.
@@ -587,7 +587,7 @@ R借助泛型函数\footnote{给定模型和估计方法,不同数据的估计�
 
 就是说我们输入的参数没起到作用.
 
-查看函数说明\footnote{添加负号与求极大值对应.}
+查看函数说明\footnote{垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -639,7 +639,7 @@ newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.116
+## [1] 0.8455
 \end{verbatim}
 
 通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解\footnote{省略了常数系数.}.
@@ -684,16 +684,16 @@ R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章
 
 \begin{verbatim}
 ## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Fri Aug  2 22:01:15 2019
+## % Mon Aug  5 09:47:55 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  & 1 & 2 & 3 & 4 & 5 \\ 
 ##   \hline
-## 1 & -1.79695 & 0.48133 & -1.89112 & -0.19811 & -1.70949 \\ 
-##   2 & 1.66070 & 0.73588 & 0.07536 & -0.43393 & -0.94164 \\ 
-##   3 & -1.13111 & 0.17197 & -0.43937 & 0.02850 & -1.08699 \\ 
+## 1 & -0.46666 & 0.68531 & -0.25135 & 0.97917 & 0.76823 \\ 
+##   2 & -0.93848 & 0.46324 & -1.02147 & -0.48296 & 0.04247 \\ 
+##   3 & -0.63633 & -1.09324 & 0.00748 & -2.16690 & -0.37086 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -722,7 +722,7 @@ R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章
   评价估计好坏.
 \end{enumerate}
 
-对于生成数据,在阅读文献时,文章中会明确给出如何产生.我们不必多费周折.在设计我们自己的模拟实验时,多借鉴其他文献中的例子.一方面方便和其他文献进行比较,另一方面,可以避免落入陷阱\footnote{给定模型和估计方法,不同数据的估计效果是不一样的.我们要清楚自己的方法对于什么样的数据应该有较好的结果,什么样的数据可能估计效果不好.对此设计不同代表性的实验.这也给阅读文献模拟部分添加了任务,思考作者为什么用这种方式产生数据、设置参数.}.
+对于生成数据,在阅读文献时,文章中会明确给出如何产生.我们不必多费周折.在设计我们自己的模拟实验时,多借鉴其他文献中的例子.一方面方便和其他文献进行比较,另一方面,可以避免落入陷阱\footnote{程序在 \href{\%22code/Rcpp-demo.cpp\%22}{这里} 查看,其中最后被/***R */夹住的部分是R程序,每次加载后会自动执行,方便调试.}.
 
 对于评价估计好坏,有限维离散参数一般采取\(\left\|\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_{0}\right\|,\)无穷维函数一般采取\(\int\left(\hat{m}(x)-m_{0}(x)\right)^{2} d x.\)
 
@@ -745,7 +745,7 @@ M_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n} m_{\theta}\left(X_{i}\right)
 
 下面以线性模型为例:\(\boldsymbol{Y}=\boldsymbol{X}^{T}\boldsymbol{\theta}+\boldsymbol{\varepsilon}\)
 
-考虑最小二乘估计,取\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=-\left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)^{2}\)\footnote{添加负号与求极大值对应.},则
+考虑最小二乘估计,取\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=-\left(Y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)^{2}\)\footnote{垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。},则
 
 \[ 
 \begin{aligned} 
@@ -782,8 +782,8 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-##     X1     X2     X3 
-##  1.044 -1.915  2.871
+##      X1      X2      X3 
+##  0.9307 -2.0048  2.8726
 \end{verbatim}
 
 \begin{Shaded}
@@ -793,7 +793,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  1.044 -1.915  2.871
+## [1]  0.9307 -2.0048  2.8726
 \end{verbatim}
 
 可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看
@@ -806,7 +806,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 3.109e-15
+## [1] 4.552e-15
 \end{verbatim}
 
 另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:
@@ -832,7 +832,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mean relative difference: 5.332e-16"
+## [1] "Mean relative difference: 7.837e-16"
 \end{verbatim}
 
 下面考虑稍复杂的情况,取
@@ -910,11 +910,11 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 ## 
 ## Coefficients:
 ##      X1       X2       X3       X4       X5       X6  
-## -1.1935  -1.0833  -0.0421  -0.1243   1.1548   1.0590  
+## -0.9136  -1.0812   0.1308   0.0902   0.8542   0.5147  
 ## 
 ## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
 ## Null Deviance:       693 
-## Residual Deviance: 545   AIC: 557
+## Residual Deviance: 593   AIC: 605
 \end{verbatim}
 
 \begin{Shaded}
@@ -926,15 +926,15 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \begin{verbatim}
 ## $theta
 ##          [,1]
-## [1,] -1.26026
-## [2,] -1.10258
-## [3,] -0.07847
-## [4,] -0.13795
-## [5,]  1.21274
-## [6,]  1.04286
+## [1,] -0.93491
+## [2,] -1.11849
+## [3,]  0.11274
+## [4,]  0.09284
+## [5,]  0.87808
+## [6,]  0.52674
 ## 
 ## $steps
-## [1] 3
+## [1] 5
 \end{verbatim}
 
 可以看到和真值相差不大,但是很快收敛.
@@ -1169,11 +1169,25 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \hypertarget{section-12}{%
 \section{并行}\label{section-12}}
 
-单次模拟时间越长,重复次数越多,并行得到的提升越明显.
+\textbf{单次模拟时间越长,重复次数越多,并行得到的提升越明显.}
+
+R中有很多并行包,可以在
+\href{https://yulongniu.bionutshell.org/blog/2014/06/25/parallel-package/}{不同并行包比较}查看对比.
+
+这里介绍的foreach是比较友好的一个包.
+
+下面以线性模型估计系数为例,给出示例代码.
+
+sim\_single可以在
+\href{\%22code/parallel-demo.R\%22}{单次估计程序}
+查看.其中SLP参数用于增加单次模拟的计算量(运行时间).
+
+\hypertarget{section-13}{%
+\subsection{低重复次数,低计算量}\label{section-13}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R"}\NormalTok{)}
+\KeywordTok{source}\NormalTok{(}\StringTok{"code/parallel-demo.R"}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
 \NormalTok{beta0 =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
@@ -1196,7 +1210,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.219 secs
+## Time difference of 2.154 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1206,13 +1220,13 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##           [,1]   [,2]  [,3]    [,4]    [,5]  [,6]
-## result.1 1.006 -2.004 2.994  0.9836 -4.2720 1.638
-## result.2 1.004 -2.001 2.999  0.7435 -0.3236 4.307
-## result.3 1.001 -2.001 3.005 -1.0458 -0.6022 3.218
+##           [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
+## result.1 1.003 -2.001 3.005 -1.1727 -2.584 -2.439
+## result.2 1.004 -2.001 3.001  1.2478 -1.499  1.550
+## result.3 1.002 -2.003 3.001  0.8456 -2.193  2.800
 \end{verbatim}
 
-把申请cluster的命令去掉,程序就会按串行执行
+把申请cluster的命令去掉,\%dopar\%换成\%do\%程序就会按串行执行
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1239,7 +1253,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.385 secs
+## Time difference of 2.286 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1249,11 +1263,14 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]  [,4]   [,5]   [,6]
-## result.1 1.0100 -2.001 2.999 2.518 -2.787 0.2465
-## result.2 1.0044 -1.994 3.000 1.307 -1.683 3.2326
-## result.3 0.9929 -1.999 3.002 1.728 -2.453 3.6329
+##            [,1]   [,2]  [,3]   [,4]   [,5]   [,6]
+## result.1 1.0122 -2.005 3.004 -1.917 -2.588 -3.872
+## result.2 0.9973 -2.003 2.994 -2.835 -6.775 -2.712
+## result.3 1.0041 -2.005 2.995  1.019 -2.212  2.953
 \end{verbatim}
+
+\hypertarget{section-14}{%
+\subsection{高重复次数,低计算量}\label{section-14}}
 
 增加到1000次.
 
@@ -1284,7 +1301,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 3.209 secs
+## Time difference of 3.242 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1294,10 +1311,10 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##           [,1]   [,2]  [,3]    [,4]    [,5]   [,6]
-## result.1 1.002 -1.998 3.006 -2.8564 -2.5296  4.281
-## result.2 1.001 -1.994 2.999  0.4783 -0.8851  2.513
-## result.3 1.004 -1.999 2.999  2.5712 -1.6674 -0.418
+##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 1.0002 -2.002 3.007 2.1339 -1.191 4.508
+## result.2 0.9987 -2.005 2.999 1.6117 -1.703 3.207
+## result.3 1.0015 -2.001 2.999 0.9367 -1.038 2.027
 \end{verbatim}
 
 串行:
@@ -1327,7 +1344,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 4.685 secs
+## Time difference of 4.531 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1337,11 +1354,14 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##           [,1]   [,2]  [,3]  [,4]    [,5]  [,6]
-## result.1 1.003 -1.994 2.997 7.395 -10.601 3.527
-## result.2 1.004 -2.005 2.994 1.999  -1.906 3.459
-## result.3 1.000 -1.999 2.996 2.890  -3.343 4.518
+##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 0.9935 -2.006 3.001 0.8280 -1.304 2.702
+## result.2 1.0012 -2.008 2.997 0.6967 -3.121 3.216
+## result.3 0.9970 -2.002 2.999 0.7598 -2.071 2.580
 \end{verbatim}
+
+\hypertarget{section-15}{%
+\subsection{低重复次数,高计算量}\label{section-15}}
 
 增加每次模拟的计算量,延长单次模拟的时间.
 
@@ -1372,7 +1392,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 8.871 secs
+## Time difference of 8.959 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1382,10 +1402,10 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]   [,4]    [,5]   [,6]
-## result.1 0.9966 -1.996 3.009 12.941 -1.3502  8.478
-## result.2 1.0006 -2.000 3.002 -1.841  0.5314  4.222
-## result.3 1.0043 -1.999 2.998  4.110 -8.8642 20.321
+##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
+## result.1 1.0022 -2.002 2.994 0.8619 -1.743 2.295
+## result.2 1.0016 -2.011 3.003 1.5220 -3.314 2.860
+## result.3 0.9994 -2.004 3.002 0.9241 -2.217 3.344
 \end{verbatim}
 
 串行:
@@ -1415,7 +1435,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 37.68 secs
+## Time difference of 36.57 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1425,20 +1445,53 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]   [,4]    [,5]  [,6]
-## result.1 1.0022 -2.002 2.999 0.3132 -1.9456 3.263
-## result.2 0.9904 -1.992 2.990 2.3334 -0.1429 3.619
-## result.3 0.9950 -2.002 2.994 0.3278 -0.6902 2.363
+##            [,1]   [,2]  [,3]     [,4]    [,5]    [,6]
+## result.1 0.9866 -2.002 3.000   0.7338  -2.158   2.094
+## result.2 1.0014 -2.006 3.002 -14.3951 -17.688 -14.111
+## result.3 1.0026 -1.996 2.999   0.7581  -1.506   2.894
 \end{verbatim}
 
 \hypertarget{rcpp}{%
 \section{Rcpp}\label{rcpp}}
+
+Rcpp提供了R与C++的无缝接口,可以很方便的在R中调用编写的C++程序.
 
 \href{https://teuder.github.io/rcpp4everyone_en/}{Rcpp文档}
 
 \href{https://adv-r.hadley.nz/rcpp.html}{如何改写R程序}
 
 \href{https://teuder.github.io/rcpp4everyone_en/220_dpqr_functions.html\#list-of-probability-distribution-functions}{Rcpp已提供的分布函数}
+
+可以通过cppFunction直接在R中编写:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Rcpp}\OperatorTok{::}\KeywordTok{cppFunction}\NormalTok{(}\StringTok{'int add(int x, int y, int z) \{}
+\StringTok{  int sum = x + y + z;}
+\StringTok{  return sum;}
+\StringTok{\}'}\NormalTok{)}
+\NormalTok{add}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## function (x, y, z) 
+## .Call(<pointer: 0x10fe018f0>, x, y, z)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{add}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+但是这种方式在编写(没有语法高亮)、调试(定位编译报错行号)时都有不便.推荐单独编写cpp文件,通过sourceCpp加载.
+
+下面以矩阵按列求和为例,比较col\_mean(自己编写的C++函数)\footnote{程序在 \href{\%22code/Rcpp-demo.cpp\%22}{这里} 查看,其中最后被/***R */夹住的部分是R程序,每次加载后会自动执行,方便调试.}、colMeans(R base中提供的注重速度的函数)、mean\_R(在R中用编写的函数)以及apply的运行速度.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1462,9 +1515,7 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \begin{Highlighting}[]
 \NormalTok{m =}\StringTok{ }\DecValTok{200}
 \NormalTok{n =}\StringTok{ }\DecValTok{100}
-
 \NormalTok{X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(m}\OperatorTok{*}\NormalTok{n),m,n)}
-
 \KeywordTok{col_mean}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l1}
 \KeywordTok{mean_R}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l2}
 \KeywordTok{all.equal}\NormalTok{(l1,l2)}
@@ -1510,7 +1561,83 @@ X & p=0.5 & p=0.6 & p=0.7 & p=0.8 & p=0.9\\
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-39-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+对比结果如图所示,其中gc\footnote{垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。}是一个关于内存使用的指标,越低越好.
+
+apply和在R中用循环编写函数速度差不多,用C++编写的函数明显比其他快,甚至比base库中的函数还要快.不过,当我们增加矩阵的大小时,就会发现不一样的结果:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Rcpp}\OperatorTok{::}\KeywordTok{sourceCpp}\NormalTok{(}\StringTok{'code/Rcpp-demo.cpp'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## > mean_R <- function(X) {
+## +     n = dim(X)[1]
+## +     m = dim(X)[2]
+## +     cm <- rep(0, m)
+## +     for (i in 1:n) {
+## +         cm = cm + X[i, ]
+## +     }
+## +    .... [TRUNCATED]
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m =}\StringTok{ }\DecValTok{2000}
+\NormalTok{n =}\StringTok{ }\DecValTok{1000}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(m}\OperatorTok{*}\NormalTok{n),m,n)}
+\KeywordTok{col_mean}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l1}
+\KeywordTok{mean_R}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l2}
+\KeywordTok{all.equal}\NormalTok{(l1,l2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colMeans}\NormalTok{(X) ->}\StringTok{ }\NormalTok{l3}
+\KeywordTok{all.equal}\NormalTok{(l1,l3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, mean) ->}\StringTok{ }\NormalTok{l4}
+\KeywordTok{all.equal}\NormalTok{(l1,l4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bench}\OperatorTok{::}\KeywordTok{mark}\NormalTok{(}
+  \KeywordTok{col_mean}\NormalTok{(X),}
+  \KeywordTok{colMeans}\NormalTok{(X),}
+  \KeywordTok{mean_R}\NormalTok{(X),}
+  \KeywordTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, mean),}
+  \DataTypeTok{check =} \OtherTok{FALSE}\NormalTok{,}\DataTypeTok{relative =} \OtherTok{TRUE}
+\NormalTok{)->results}
+\NormalTok{ggplot2}\OperatorTok{::}\KeywordTok{autoplot}\NormalTok{(results)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-41-1.pdf}
+
+可以看到,还是base库中提供的函数速度最快.
 
 \hypertarget{rcppparallel}{%
 \subsection{RcppParallel}\label{rcppparallel}}
@@ -1519,8 +1646,11 @@ C++并行库
 
 \href{https://rcppcore.github.io/RcppParallel/index.html}{官方文档}
 
+这里提供一个RcppParallel的例子:
+\href{https://github.com/Ri0016/kernelCpp}{核估计}
+
 下面是三个关于线性代数的库,\url{https://gist.github.com/wolfv/ca3ac2b24e1daf70f85eac18ec7b1b8f}
-这个链接测试结果表明xtensor最快
+这个例子的测试结果表明xtensor最快
 
 \hypertarget{rcpparmadillo}{%
 \subsection{RcppArmadillo}\label{rcpparmadillo}}

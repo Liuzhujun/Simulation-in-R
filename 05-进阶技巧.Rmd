@@ -57,10 +57,24 @@ apply(a,c(1,2),tapply,rep(c(-1,-2),2), sum)
 
 ## 并行
 
-单次模拟时间越长,重复次数越多,并行得到的提升越明显.
+**单次模拟时间越长,重复次数越多,并行得到的提升越明显.**
+
+R中有很多并行包,可以在
+[不同并行包比较](https://yulongniu.bionutshell.org/blog/2014/06/25/parallel-package/)查看对比.
+
+这里介绍的foreach是比较友好的一个包.
+
+下面以线性模型估计系数为例,给出示例代码.
+
+sim_single可以在
+[单次估计程序]("code/parallel-demo.R")
+查看.其中SLP参数用于增加单次模拟的计算量(运行时间).
+
+
+### 低重复次数,低计算量
 
 ```{r,cache=TRUE, cache.path="code/cache/"}
-source("/Users/wang/Documents/GitHub/Simulation-in-R/code/parallel-demo.R")
+source("code/parallel-demo.R")
 library("foreach")
 library("doParallel")
 beta0 = c(1,-2,3)
@@ -83,7 +97,7 @@ result/SIM
 ```
 
 
-把申请cluster的命令去掉,程序就会按串行执行
+把申请cluster的命令去掉,%dopar%换成%do%程序就会按串行执行
 ```{r ,cache=TRUE, cache.path="code/cache/"}
 source("code/parallel-demo.R")
 library("foreach")
@@ -108,6 +122,7 @@ result/SIM
 ```
 
 
+### 高重复次数,低计算量
 
 增加到1000次.
 
@@ -160,6 +175,7 @@ t.end-tstart
 result/SIM
 ```
 
+### 低重复次数,高计算量
 
 增加每次模拟的计算量,延长单次模拟的时间.
 
@@ -212,10 +228,12 @@ result/SIM
 ```
 
 
+
+
 ## Rcpp
 
 
-
+Rcpp提供了R与C++的无缝接口,可以很方便的在R中调用编写的C++程序.
 
 
 [Rcpp文档](https://teuder.github.io/rcpp4everyone_en/)
@@ -226,25 +244,34 @@ result/SIM
 [Rcpp已提供的分布函数](https://teuder.github.io/rcpp4everyone_en/220_dpqr_functions.html#list-of-probability-distribution-functions)
 
 
+可以通过cppFunction直接在R中编写:
+```{r}
+Rcpp::cppFunction('int add(int x, int y, int z) {
+  int sum = x + y + z;
+  return sum;
+}')
+add
+add(1, 2, 3)
+```
+但是这种方式在编写(没有语法高亮)、调试(定位编译报错行号)时都有不便.推荐单独编写cpp文件,通过sourceCpp加载.
+
+
+下面以矩阵按列求和为例,比较col_mean(自己编写的C++函数)[^1]、colMeans(R base中提供的注重速度的函数)、mean_R(在R中用编写的函数)以及apply的运行速度.
+
+
 
 ```{r}
 Rcpp::sourceCpp('code/Rcpp-demo.cpp')
-
 m = 200
 n = 100
-
 X <- matrix(rnorm(m*n),m,n)
-
 col_mean(X) -> l1
 mean_R(X) -> l2
 all.equal(l1,l2)
-
 colMeans(X) -> l3
 all.equal(l1,l3)
-
 apply(X, 2, mean) -> l4
 all.equal(l1,l4)
-
 bench::mark(
   col_mean(X),
   colMeans(X),
@@ -255,6 +282,33 @@ bench::mark(
 ggplot2::autoplot(results)
 ```
 
+对比结果如图所示,其中gc[^2]是一个关于内存使用的指标,越低越好.
+
+apply和在R中用循环编写函数速度差不多,用C++编写的函数明显比其他快,甚至比base库中的函数还要快.不过,当我们增加矩阵的大小时,就会发现不一样的结果:
+
+```{r}
+Rcpp::sourceCpp('code/Rcpp-demo.cpp')
+m = 2000
+n = 1000
+X <- matrix(rnorm(m*n),m,n)
+col_mean(X) -> l1
+mean_R(X) -> l2
+all.equal(l1,l2)
+colMeans(X) -> l3
+all.equal(l1,l3)
+apply(X, 2, mean) -> l4
+all.equal(l1,l4)
+bench::mark(
+  col_mean(X),
+  colMeans(X),
+  mean_R(X),
+  apply(X, 2, mean),
+  check = FALSE,relative = TRUE
+)->results
+ggplot2::autoplot(results)
+```
+
+可以看到,还是base库中提供的函数速度最快.
 
 
 ### RcppParallel
@@ -264,9 +318,12 @@ C++并行库
 [官方文档](https://rcppcore.github.io/RcppParallel/index.html)
 
 
+这里提供一个RcppParallel的例子:
+[核估计](https://github.com/Ri0016/kernelCpp)
+
 
 下面是三个关于线性代数的库,https://gist.github.com/wolfv/ca3ac2b24e1daf70f85eac18ec7b1b8f
-这个链接测试结果表明xtensor最快
+这个例子的测试结果表明xtensor最快
 
 
 ### RcppArmadillo
@@ -284,3 +341,8 @@ C++并行库
 
 
 [GitHub地址](https://github.com/QuantStack/xtensor-r)
+
+
+
+[^1]:程序在 [这里]("code/Rcpp-demo.cpp") 查看,其中最后被/\*\*\*R \*/夹住的部分是R程序,每次加载后会自动执行,方便调试.
+[^2]:垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。

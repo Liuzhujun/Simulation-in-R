@@ -1,7 +1,3 @@
-Sys.time()
-freq=rep(0,100)
-for(g in 1:100)
-{
   #??��????
   library('MASS')
   N=20;T=40;mu=c(0,0);Sigma=matrix(c(1,0,0,1),2,2)
@@ -13,20 +9,22 @@ for(g in 1:100)
   e=mvrnorm(N,rep(0,T),Sigma=diag(1,nrow=T))
   X_1=matrix(0.25,N,T)+0.25*(t(r0)%*%f0)+n[,1:T]
   X_2=matrix(0.5,N,T)+0.5*(t(r0)%*%f0)+n[,(T+1):(2*T)]
+#  X_1=n[,1:T]
+#  X_2=n[,(T+1):(2*T)]
   #GDP4
   #e=(mvrnorm(N,rep(0,T),Sigma=diag(1,nrow=T)))*(0.1+0.1*(X_1*X_1+X_2*X_2))^(1/2)
   #GDP7
   #e=mvrnorm(N,rep(0,T+1),Sigma=diag(1,nrow=T+1))
   #e=0.5*e[,1:T]+e[,2:(T+1)]
-  Y=2*X_1-3*X_2+t(r0)%*%f0+e
+  Y=-11*X_1+25*X_2+t(r0)%*%f0+e
   X=array(c(as.array(X_1),as.array(X_2)))
   dim(X)=c(N,T,2)
   K=2
   start=matrix(-1,K,1)
   p=2
   R=2
-  precision_beta = 10^-3
-  repMIN=30
+  precision_beta = 10^-6
+  repMIN=300
   repMAX=10*repMIN
   c0<-c(0.5,1,2)
 
@@ -54,6 +52,7 @@ for(g in 1:100)
       }else{
         st=start+10*rnorm(length(start),mean=0,sd=1);
       }
+    #  print(st)
       h=minimize_obj_method1(Y,X,R,st,precision_beta)
       para=h[['beta']]
       obj=h[['obj']]
@@ -72,6 +71,8 @@ for(g in 1:100)
       if(ef>0){
         count=count+1
       }
+   #   print(beta)
+
     }
     #cat('beta',beta,'\n')
   }
@@ -147,16 +148,3 @@ for(g in 1:100)
    #gamaNThs[s] <- gamaNT
   #}
   #supgamaNT <- max(gamaNThs)
-
-  #???鹦Ч
-  if(as.numeric(gamaNT)>1.65){
-    freq[g]=1
-  }else{
-    freq[g]=0
-  }
-}
-
-freq
-power= sum(freq)/100
-power
-Sys.time()

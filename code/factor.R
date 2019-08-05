@@ -7,18 +7,19 @@ get_residuals=function(Y,X,beta){
 }
 
 principal_components=function(res,R){
-  T=ncol(res)           
+  T=ncol(res)
   V=eigen(t(res)%*%res)$vectors;
   D=eigen(t(res)%*%res)$values;
-  e=cbind(t(V),D);
-  newe=e[order(e[,T+1]),]
-  newV=t(newe[,1:T])
-  f=newV[,1:R]
+  #e=cbind(t(V),D);
+  #newe=e[order(e[,T+1]),]
+  #newV=t(newe[,1:T])
+  #f=newV[,1:R]
+  f=V[,1:R]
   for(r in 1:R){
-    f[,r]=f[,r]/sqrt(sum(f[,r]^2)); 
+    f[,r]=f[,r]/sqrt(sum(f[,r]^2));
     if (mean(f[,r])<0){
       f[,r]=-f[,r]
-    }         
+    }
   }
   lambda=res%*%f
   w=list(lambda=lambda,f=f)
@@ -26,54 +27,62 @@ principal_components=function(res,R){
 }
 
 LS_obj=function(beta,Y,X,R){
-  res=get_residuals(Y=Y,X=X,beta=beta);   
+  res=get_residuals(Y=Y,X=X,beta=beta);
   ev=sort((eigen(t(res)%*%res)$values));
   obj=sum(ev[1:(T-R)])/N/T;
   return(obj)
 }
 
 minimize_obj_method1=function(Y,X,R,st,precision_beta){
-  N=nrow(Y);#·µ»ØY¾ØÕóÐÐÊý
+  N=nrow(Y);#????Y????????
   T=ncol(Y);
   K=2;
   SST=sum(diag(Y%*%t(Y)))/N/T;
-  beta=st;  # beta×îÐ¡»¯³õÖµ;
+  beta=st;  # beta??Ð¡????Öµ;
   beta_old=st+Inf;
   obj=Inf;
   diff_obj=-Inf;
+  #cat("new iter: \n")
   while((max(abs(beta-beta_old))>precision_beta)&&(diff_obj<=SST*10^-10)){
     res=get_residuals(Y=Y,X=X,beta=beta)
     w=principal_components(res=res,R)
     lambda=w[[1]]
     f=w[[2]]
-    res=res-lambda%*%t(f);       
-    obj_old=obj;              #´æ¾ÉµÄÄ¿±êº¯Êý
-    obj=sum(diag(t(res)%*%res))/N/T;  #×îÐ¡¶þ³ËÄ¿±êº¯Êý
-    diff_obj=obj-obj_old;     
-    if(diff_obj<=0){  
+#print(  all.equal(res-lambda%*%t(f),res))
+#print(beta)
+    res=res-lambda%*%t(f);
+    obj_old=obj;              #???Éµ?Ä¿?êº¯??
+    obj=sum(diag(t(res)%*%res))/N/T;  #??Ð¡????Ä¿?êº¯??
+    diff_obj=obj-obj_old;
+ # print(diff_obj)
+    if(diff_obj<=0){
       YY=as.vector(Y)
       XX=matrix(0,N*T,K)
       for(k in 1:K){
-        xx=drop(X[,,k]);        
-        xx=xx-lambda %*% (t(lambda) %*% t(ginv(xx)));    #½«lambdaÍ¶Ó°µ½xÒÔÍâµÄµØ·½
-        xx=xx-t(f %*% (t(f) %*% ginv(xx)))     
-        XX[,k]=as.vector(xx)  #Ê¹ XX ³ÉÎªNTxK matrix
+        xx=drop(X[,,k]);
+      #  xx=xx-lambda %*% (t(lambda) %*% t(ginv(xx)));    #??lambdaÍ¶Ó°??x?????ÄµØ·?
+      #  xx=xx-t(f %*% (t(f) %*% ginv(xx)))
+        xx=xx-lambda %*% (ginv(lambda) %*% ((xx)));    #??lambdaÍ¶Ó°??x?????ÄµØ·?
+        xx=xx-t(f %*% (ginv(f) %*% t(xx)))
+        XX[,k]=as.vector(xx)  #Ê¹ XX ??ÎªNTxK matrix
       }
-      beta_old=beta;                 #´æ¾ÉµÄbeta
-      beta=ginv(t(XX)%*%XX)%*%t(XX)%*%YY;      #¼ÆËã×îÐ¡¶þ³Ë¹À¼Æ
-    }
+      beta_old=beta;                 #???Éµ?beta
+      beta=solve(t(XX)%*%XX)%*%t(XX)%*%YY;      #??????Ð¡???Ë¹ï¿½ï¿½?
+     # print(beta)
+     # cat(beta_old,diff_obj,beta,"\n")
+          }
   }
   if(diff_obj<=0){
     ef=1;       #good solution found
   }else{
-    ef=-1; 
+    ef=-1;
   }
-  obj=LS_obj(beta=beta,Y=Y,X=X,R=R); #¼ÆËãÄ¿±êº¯Êý
+  obj=LS_obj(beta=beta,Y=Y,X=X,R=R); #????Ä¿?êº¯??
   h=list(beta=beta,obj=obj,ef=ef)
   return(h)
 }
 
-#ºËº¯Êý
+#?Ëº???
 K0=function(roth,X,res){
   temp0=0
   for(i in 1:N){
@@ -88,7 +97,7 @@ K0=function(roth,X,res){
   }
   return(temp0)
 }
-  
+
 
 kii_kernel=function(roth,X,res){
   temp1=0;

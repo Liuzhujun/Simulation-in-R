@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-08-02" />
+<meta name="date" content="2019-08-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -153,7 +153,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="section-10.html"><a href="section-10.html"><i class="fa fa-check"></i><b>3</b> 假设检验</a></li>
 <li class="chapter" data-level="4" data-path="section-11.html"><a href="section-11.html"><i class="fa fa-check"></i><b>4</b> 进阶技巧</a><ul>
 <li class="chapter" data-level="4.1" data-path="section-11.html"><a href="section-11.html#apply"><i class="fa fa-check"></i><b>4.1</b> apply函数族</a></li>
-<li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a></li>
+<li class="chapter" data-level="4.2" data-path="section-11.html"><a href="section-11.html#section-12"><i class="fa fa-check"></i><b>4.2</b> 并行</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="section-11.html"><a href="section-11.html#section-13"><i class="fa fa-check"></i><b>4.2.1</b> 低重复次数,低计算量</a></li>
+<li class="chapter" data-level="4.2.2" data-path="section-11.html"><a href="section-11.html#section-14"><i class="fa fa-check"></i><b>4.2.2</b> 高重复次数,低计算量</a></li>
+<li class="chapter" data-level="4.2.3" data-path="section-11.html"><a href="section-11.html#section-15"><i class="fa fa-check"></i><b>4.2.3</b> 低重复次数,高计算量</a></li>
+</ul></li>
 <li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
 <li class="chapter" data-level="4.3.2" data-path="section-11.html"><a href="section-11.html#rcpparmadillo"><i class="fa fa-check"></i><b>4.3.2</b> RcppArmadillo</a></li>
@@ -226,13 +230,13 @@ Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+<
 <p>可以看到结果显示不相等,但是如果我们打印出来显示:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef</code></pre>
 <pre><code>##      X1      X2      X3 
-##  0.8695 -2.1192  2.9856</code></pre>
+##  0.8517 -2.0389  2.9582</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution</code></pre>
-<pre><code>## [1]  0.8695 -2.1192  2.9856</code></pre>
+<pre><code>## [1]  0.8517 -2.0389  2.9582</code></pre>
 <p>可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">abs</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef <span class="op">-</span>
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution))</code></pre>
-<pre><code>## [1] 1.11e-15</code></pre>
+<pre><code>## [1] 2.442e-15</code></pre>
 <p>另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
@@ -241,7 +245,7 @@ Y =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+<
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">unname</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X<span class="op">+</span><span class="dv">0</span>)<span class="op">$</span>coef),
 <span class="kw">solve.QP</span>(<span class="dt">Dmat =</span> <span class="kw">t</span>(X)<span class="op">%*%</span>X<span class="op">/</span>n, <span class="dt">dvec =</span> (<span class="kw">t</span>(Y)<span class="op">%*%</span>X)<span class="op">/</span>n, <span class="dt">Amat =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,p,p))<span class="op">$</span>solution
 ,<span class="dt">tolerance=</span><span class="fl">1e-20</span>)</code></pre>
-<pre><code>## [1] &quot;Mean relative difference: 1.858e-16&quot;</code></pre>
+<pre><code>## [1] &quot;Mean relative difference: 4.176e-16&quot;</code></pre>
 <p>下面考虑稍复杂的情况,取
 <span class="math inline">\(m_{\theta}\left(\boldsymbol{X}_{i}\right)=\rho_{\tau}\left(y_{i}-\boldsymbol{X}_{i}^{T} \boldsymbol{\theta}\right)\)</span>,其中
 <span class="math inline">\(\rho_{\tau}(t)=t\left(\tau-I_{\{t&lt;0\}}\right)\)</span>.
@@ -291,25 +295,19 @@ Y[Y<span class="op">&gt;</span><span class="dv">0</span>]=<span class="dv">1</sp
 ## Call:  glm(formula = Y ~ X + 0, family = binomial(link = &quot;logit&quot;))
 ## 
 ## Coefficients:
-##     X1      X2      X3      X4      X5      X6  
-## -1.148  -1.112   0.128  -0.183   1.071   1.221  
+##      X1       X2       X3       X4       X5       X6  
+## -1.2090  -1.0708   0.0639  -0.4126   1.4464   1.1832  
 ## 
 ## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
 ## Null Deviance:       693 
-## Residual Deviance: 547   AIC: 559</code></pre>
+## Residual Deviance: 538   AIC: 550</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">myglm</span>(Y,X,<span class="dt">distribution  =</span> <span class="st">&quot;binom&quot;</span>)</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
 <pre><code>## $theta
-##          [,1]
-## [1,] -0.86821
-## [2,] -0.84426
-## [3,]  0.09939
-## [4,] -0.14086
-## [5,]  0.80079
-## [6,]  0.90642
+## [1] 0 0 0 0 0 0
 ## 
 ## $steps
-## [1] 2</code></pre>
+## [1] 1</code></pre>
 <p>可以看到和真值相差不大,但是很快收敛.</p>
 
 </div>
@@ -317,8 +315,8 @@ Y[Y<span class="op">&gt;</span><span class="dv">0</span>]=<span class="dv">1</sp
 <div class="footnotes">
 <hr />
 <ol start="6">
-<li id="fn6"><p>给定模型和估计方法,不同数据的估计效果是不一样的.我们要清楚自己的方法对于什么样的数据应该有较好的结果,什么样的数据可能估计效果不好.对此设计不同代表性的实验.这也给阅读文献模拟部分添加了任务,思考作者为什么用这种方式产生数据、设置参数.<a href="section-9.html#fnref6" class="footnote-back">↩</a></p></li>
-<li id="fn7"><p>添加负号与求极大值对应.<a href="section-9.html#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>程序在 <a href="%22code/Rcpp-demo.cpp%22">这里</a> 查看,其中最后被/***R */夹住的部分是R程序,每次加载后会自动执行,方便调试.<a href="section-9.html#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。<a href="section-9.html#fnref7" class="footnote-back">↩</a></p></li>
 <li id="fn8"><p>后续重新整理成Rmd格式.<a href="section-9.html#fnref8" class="footnote-back">↩</a></p></li>
 <li id="fn9"><p>省略了常数系数.<a href="section-9.html#fnref9" class="footnote-back">↩</a></p></li>
 <li id="fn10"><p>目前只有单次二项分布的程序正确.完整的程序可以从<a href="code/glm.R">这里</a>下载.<a href="section-9.html#fnref10" class="footnote-back">↩</a></p></li>
