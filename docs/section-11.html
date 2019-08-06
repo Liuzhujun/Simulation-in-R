@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-08-05" />
+<meta name="date" content="2019-08-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,6 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2.1" data-path="section-11.html"><a href="section-11.html#section-13"><i class="fa fa-check"></i><b>4.2.1</b> 低重复次数,低计算量</a></li>
 <li class="chapter" data-level="4.2.2" data-path="section-11.html"><a href="section-11.html#section-14"><i class="fa fa-check"></i><b>4.2.2</b> 高重复次数,低计算量</a></li>
 <li class="chapter" data-level="4.2.3" data-path="section-11.html"><a href="section-11.html#section-15"><i class="fa fa-check"></i><b>4.2.3</b> 低重复次数,高计算量</a></li>
+<li class="chapter" data-level="4.2.4" data-path="section-11.html"><a href="section-11.html#section-16"><i class="fa fa-check"></i><b>4.2.4</b> 模型选择</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
@@ -314,12 +315,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="kw">stopImplicitCluster</span>()
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 2.122 secs</code></pre>
+<pre><code>## Time difference of 2.182 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
-## result.1 0.9970 -1.995 2.997  3.4221 -0.504  2.024
-## result.2 0.9964 -2.000 2.999  0.9375 -3.918 -4.313
-## result.3 0.9984 -1.999 2.996 18.3008 35.396 69.335</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]     [,4]   [,5]  [,6]
+## result.1 0.9988 -2.006 3.002 -0.05712 -1.969 1.962
+## result.2 0.9979 -1.996 2.997  2.41988 -4.019 1.518
+## result.3 0.9985 -2.002 3.007  0.62494 -2.432 2.903</code></pre>
 <p>把申请cluster的命令去掉,%dopar%换成%do%程序就会按串行执行</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
@@ -340,12 +341,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="co">#stopImplicitCluster()</span>
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 2.29 secs</code></pre>
+<pre><code>## Time difference of 2.285 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
-## result.1 1.0030 -1.997 3.004 0.5165 -2.420 3.371
-## result.2 1.0012 -2.001 2.996 1.0159 -1.835 2.800
-## result.3 0.9998 -2.005 3.000 1.3691 -2.233 4.012</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]    [,6]
+## result.1 1.0005 -1.997 3.003  7.4661 -4.5211 -0.2274
+## result.2 0.9939 -2.002 3.003 -0.8143 -0.4892  4.1754
+## result.3 1.0036 -2.002 2.996  0.4728 -1.9347  0.9797</code></pre>
 </div>
 <div id="section-14" class="section level3">
 <h3><span class="header-section-number">4.2.2</span> 高重复次数,低计算量</h3>
@@ -370,12 +371,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="kw">stopImplicitCluster</span>()
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 3.211 secs</code></pre>
+<pre><code>## Time difference of 3.403 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
 <pre><code>##           [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
-## result.1 1.000 -2.001 2.999 1.9871 -3.986 2.036
-## result.2 1.000 -2.005 3.002 0.1942 -2.556 3.760
-## result.3 1.002 -2.000 2.997 1.1988 -2.688 3.887</code></pre>
+## result.1 1.007 -2.013 2.999 0.1556 -2.407 3.176
+## result.2 1.008 -2.002 2.996 0.7327 -2.565 3.577
+## result.3 1.000 -2.000 2.997 2.5792 -2.113 2.966</code></pre>
 <p>串行:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
@@ -396,12 +397,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="co">#stopImplicitCluster()</span>
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 4.406 secs</code></pre>
+<pre><code>## Time difference of 4.604 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##           [,1]   [,2]  [,3]     [,4]   [,5]   [,6]
-## result.1 1.004 -1.996 3.002   1.4786 -1.526  4.099
-## result.2 1.002 -2.001 2.996   0.8578 -1.428  1.929
-## result.3 1.002 -1.997 3.003 -12.7748  7.260 28.167</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]   [,4]    [,5]  [,6]
+## result.1 1.0017 -1.999 3.000 1.5062 -2.2061 2.577
+## result.2 1.0032 -1.990 2.997 3.9836 -0.5012 3.743
+## result.3 0.9991 -1.997 2.997 0.8568 -2.0615 2.718</code></pre>
 </div>
 <div id="section-15" class="section level3">
 <h3><span class="header-section-number">4.2.3</span> 低重复次数,高计算量</h3>
@@ -426,12 +427,12 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="kw">stopImplicitCluster</span>()
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 8.357 secs</code></pre>
+<pre><code>## Time difference of 9.387 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]   [,6]
-## result.1 0.9989 -1.993 3.010 -3.5241 -0.5927 15.561
-## result.2 0.9934 -2.004 2.994  0.7681 -2.3377  2.843
-## result.3 0.9996 -1.998 2.999  0.4675 -1.1299  2.621</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]  [,4]   [,5]  [,6]
+## result.1 1.0101 -2.001 2.994 1.373 -1.572 2.844
+## result.2 0.9968 -2.013 2.992 3.813 -4.572 8.934
+## result.3 0.9996 -1.997 3.000 7.350 -4.860 3.662</code></pre>
 <p>串行:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;code/parallel-demo.R&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
@@ -452,12 +453,71 @@ result &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class
 <span class="co">#stopImplicitCluster()</span>
 t.end=<span class="kw">Sys.time</span>()
 t.end<span class="op">-</span>tstart</code></pre>
-<pre><code>## Time difference of 37.85 secs</code></pre>
+<pre><code>## Time difference of 38.65 secs</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">result<span class="op">/</span>SIM</code></pre>
-<pre><code>##            [,1]   [,2]  [,3]    [,4]   [,5]    [,6]
-## result.1 0.9949 -1.998 3.002 -15.131 -8.655  31.544
-## result.2 1.0092 -1.998 2.995   9.610 68.778 -45.613
-## result.3 1.0013 -1.998 3.001   0.331 -2.548   3.615</code></pre>
+<pre><code>##            [,1]   [,2]  [,3]    [,4]    [,5]    [,6]
+## result.1 1.0086 -2.010 2.998 12.4454 -0.4945 0.05709
+## result.2 0.9932 -1.998 2.997 -0.6948 -3.1508 1.68111
+## result.3 0.9986 -2.003 3.001  0.8107 -1.7691 3.49674</code></pre>
+</div>
+<div id="section-16" class="section level3">
+<h3><span class="header-section-number">4.2.4</span> 模型选择</h3>
+<p>除了蒙特卡洛模拟之外,另外一个很适合并行的应用是模型选择.下面的例子用AIC对线性模型进行选择:</p>
+<pre class="sourceCode r"><code class="sourceCode r">AIClm &lt;-<span class="st"> </span><span class="cf">function</span>(Y,X,ind){<span class="co">#单次计算AIC,ind为纳入模型的变量下标</span>
+  <span class="kw">AIC</span>(<span class="kw">lm</span>(Y<span class="op">~</span>X[,ind]))
+}
+gen_ind &lt;-<span class="st"> </span><span class="cf">function</span>(bt, index) bt<span class="op">*</span>index<span class="co">#生成候选模型下标</span>
+
+n =<span class="st"> </span><span class="dv">100</span>
+p =<span class="st"> </span><span class="dv">18</span>
+m0 =<span class="st"> </span>p<span class="op">%/%</span><span class="dv">3</span>
+p0 =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>p,m0)
+beta =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,p)
+beta[p0] =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">2</span>
+X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p),n,p)
+Y &lt;-<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)
+
+<span class="co">##生成所有候选模型的下标</span>
+pl &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>(<span class="dv">2</span><span class="op">^</span>p <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+mt &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dv">2</span><span class="op">^</span>p<span class="dv">-1</span>,p)
+<span class="cf">for</span> (i <span class="cf">in</span> pl) {
+  mt[i,]=<span class="kw">rev</span>(<span class="kw">as.integer</span>(<span class="kw">intToBits</span>(i)[<span class="dv">1</span><span class="op">:</span>(p)] ))
+}
+index =<span class="st"> </span><span class="dv">1</span><span class="op">:</span>p
+lst =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(mt, <span class="dv">1</span>, gen_ind,<span class="dt">index=</span>index))
+
+<span class="co">#并行</span>
+<span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)
+tstart=<span class="kw">Sys.time</span>()
+cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
+<span class="kw">registerDoParallel</span>(cl)
+<span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>(<span class="dv">2</span><span class="op">^</span>p<span class="dv">-1</span>),<span class="dt">.combine =</span> c) <span class="op">%dopar%</span>{
+  <span class="kw">AIClm</span>(Y,X,lst[i,])
+}-&gt;result
+<span class="kw">stopImplicitCluster</span>()
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 1.405 mins</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(lst[<span class="kw">which.min</span>(result),]<span class="op">!=</span><span class="dv">0</span>)</code></pre>
+<pre><code>##  [1]  1  5  6  8 11 12 13 15 16 17 18</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(beta<span class="op">!=</span><span class="dv">0</span>)</code></pre>
+<pre><code>## [1]  6  8 13 16 17 18</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#串行</span>
+tstart=<span class="kw">Sys.time</span>()
+cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())
+<span class="kw">registerDoParallel</span>(cl)
+<span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>(<span class="dv">2</span><span class="op">^</span>p<span class="dv">-1</span>),<span class="dt">.combine =</span> c) <span class="op">%do%</span>{
+  <span class="kw">AIClm</span>(Y,X,lst[i,])
+}-&gt;result
+<span class="kw">stopImplicitCluster</span>()
+t.end=<span class="kw">Sys.time</span>()
+t.end<span class="op">-</span>tstart</code></pre>
+<pre><code>## Time difference of 3.495 mins</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(lst[<span class="kw">which.min</span>(result),]<span class="op">!=</span><span class="dv">0</span>)</code></pre>
+<pre><code>##  [1]  1  5  6  8 11 12 13 15 16 17 18</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(beta<span class="op">!=</span><span class="dv">0</span>)</code></pre>
+<pre><code>## [1]  6  8 13 16 17 18</code></pre>
 </div>
 </div>
 <div id="rcpp" class="section level2">
@@ -473,7 +533,7 @@ t.end<span class="op">-</span>tstart</code></pre>
 <span class="st">}&#39;</span>)
 add</code></pre>
 <pre><code>## function (x, y, z) 
-## .Call(&lt;pointer: 0x10fe418f0&gt;, x, y, z)</code></pre>
+## .Call(&lt;pointer: 0x10af678f0&gt;, x, y, z)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</code></pre>
 <pre><code>## [1] 6</code></pre>
 <p>但是这种方式在编写(没有语法高亮)、调试(定位编译报错行号)时都有不便.推荐单独编写cpp文件,通过sourceCpp加载.</p>
@@ -509,7 +569,7 @@ X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">
   <span class="dt">check =</span> <span class="ot">FALSE</span>,<span class="dt">relative =</span> <span class="ot">TRUE</span>
 )-&gt;results
 ggplot2<span class="op">::</span><span class="kw">autoplot</span>(results)</code></pre>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>对比结果如图所示,其中gc<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>是一个关于内存使用的指标,越低越好.</p>
 <p>apply和在R中用循环编写函数速度差不多,用C++编写的函数明显比其他快,甚至比base库中的函数还要快.不过,当我们增加矩阵的大小时,就会发现不一样的结果:</p>
 <pre class="sourceCode r"><code class="sourceCode r">Rcpp<span class="op">::</span><span class="kw">sourceCpp</span>(<span class="st">&#39;code/Rcpp-demo.cpp&#39;</span>)</code></pre>
@@ -541,11 +601,9 @@ X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">
   <span class="kw">mean_R</span>(X),
   <span class="kw">apply</span>(X, <span class="dv">2</span>, mean),
   <span class="dt">check =</span> <span class="ot">FALSE</span>,<span class="dt">relative =</span> <span class="ot">TRUE</span>
-)-&gt;results</code></pre>
-<pre><code>## Warning: Some expressions had a GC in every iteration;
-## so filtering is disabled.</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">ggplot2<span class="op">::</span><span class="kw">autoplot</span>(results)</code></pre>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+)-&gt;results
+ggplot2<span class="op">::</span><span class="kw">autoplot</span>(results)</code></pre>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>可以看到,还是base库中提供的函数速度最快.</p>
 <div id="rcppparallel" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> RcppParallel</h3>

@@ -24,7 +24,7 @@
 <meta name="author" content="wang" />
 
 
-<meta name="date" content="2019-08-05" />
+<meta name="date" content="2019-08-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,6 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2.1" data-path="section-11.html"><a href="section-11.html#section-13"><i class="fa fa-check"></i><b>4.2.1</b> 低重复次数,低计算量</a></li>
 <li class="chapter" data-level="4.2.2" data-path="section-11.html"><a href="section-11.html#section-14"><i class="fa fa-check"></i><b>4.2.2</b> 高重复次数,低计算量</a></li>
 <li class="chapter" data-level="4.2.3" data-path="section-11.html"><a href="section-11.html#section-15"><i class="fa fa-check"></i><b>4.2.3</b> 低重复次数,高计算量</a></li>
+<li class="chapter" data-level="4.2.4" data-path="section-11.html"><a href="section-11.html#section-16"><i class="fa fa-check"></i><b>4.2.4</b> 模型选择</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="section-11.html"><a href="section-11.html#rcpp"><i class="fa fa-check"></i><b>4.3</b> Rcpp</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="section-11.html"><a href="section-11.html#rcppparallel"><i class="fa fa-check"></i><b>4.3.1</b> RcppParallel</a></li>
@@ -275,7 +276,7 @@ regData =<span class="st"> </span><span class="kw">data.frame</span>(Y,X)
 fitmodel =<span class="st"> </span><span class="kw">lm</span>(Y<span class="op">~</span>.,<span class="dt">data=</span>regData[trainlist,])
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata=</span>regData[<span class="op">-</span>trainlist,])
 <span class="kw">sum</span>((pe<span class="op">-</span>regData[<span class="op">-</span>trainlist,<span class="dv">1</span>])<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(pe)</code></pre>
-<pre><code>## [1] 1.174</code></pre>
+<pre><code>## [1] 0.9258</code></pre>
 <p>关键点:</p>
 <p><em>所有数据存在一个数据框中
 </em>通过下标控制训练集和测试集的数据</p>
@@ -289,7 +290,7 @@ Y2 =<span class="st"> </span>X2<span class="op">%*%</span>beta <span class="op">
 <span class="co">#predict(fitmodel,newdata = X2)数据格式错误,不能执行</span>
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X2))
 <span class="kw">sum</span>((pe<span class="op">-</span>Y2)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(Y2)</code></pre>
-<pre><code>## [1] 30.82</code></pre>
+<pre><code>## [1] 26.61</code></pre>
 <p>这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.</p>
 <p>错误程序2:</p>
 <pre class="sourceCode r"><code class="sourceCode r">n=<span class="dv">100</span>;p=<span class="dv">3</span>;beta=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>);
@@ -348,7 +349,7 @@ X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnor
 Y2 =<span class="st"> </span>X<span class="op">%*%</span>beta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="fl">0.2</span><span class="op">*</span>n)
 pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(X))
 <span class="kw">sum</span>((Y2<span class="op">-</span>pe)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(pe)</code></pre>
-<pre><code>## [1] 1.195</code></pre>
+<pre><code>## [1] 0.6031</code></pre>
 <p>通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 </div>
 <div id="section-6" class="section level2">
@@ -368,16 +369,16 @@ pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span clas
 <p>安装后,并不能直接使用.需要通过library命令加载后才能使用.一个package中包含很多函数和数据,有时候我们只需要使用其中的一个函数,不需要加载整个包.这时候可以通过下面这样,直接调用某个包中的函数,xtable有一些参数可以设置输出的格式,比如下面指定了小数部分位数:</p>
 <pre class="sourceCode r"><code class="sourceCode r">xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">15</span>),<span class="dv">3</span>,<span class="dv">5</span>),<span class="dt">digits=</span><span class="dv">5</span>)</code></pre>
 <pre><code>## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Mon Aug  5 09:46:39 2019
+## % Tue Aug  6 08:55:19 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 
 ##   \hline
-## 1 &amp; -1.53704 &amp; -1.67790 &amp; -2.17736 &amp; 0.54476 &amp; 0.21153 \\ 
-##   2 &amp; -0.11691 &amp; -0.59261 &amp; -0.27556 &amp; -1.84537 &amp; -0.39190 \\ 
-##   3 &amp; -0.87358 &amp; 0.45541 &amp; 0.02554 &amp; 0.80577 &amp; -1.20011 \\ 
+## 1 &amp; -1.40045 &amp; 0.78974 &amp; -1.49898 &amp; -0.49517 &amp; 0.91428 \\ 
+##   2 &amp; 0.14569 &amp; 0.76534 &amp; 1.04113 &amp; 0.68360 &amp; 0.73087 \\ 
+##   3 &amp; -0.39239 &amp; 0.15512 &amp; -0.83092 &amp; 0.77105 &amp; -0.71431 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}</code></pre>
@@ -385,8 +386,8 @@ pe =<span class="st"> </span><span class="kw">predict</span>(fitmodel,<span clas
 </div>
 <div id="section-8" class="section level2">
 <h2><span class="header-section-number">1.7</span> 模拟流程</h2>
-<div id="htmlwidget-6e8c2c01c9c7ca854582" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6e8c2c01c9c7ca854582">{"x":{"diagram":"digraph {\n\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\ndata1 [label = \"Dataset 1\", shape = folder, fillcolor = Beige]\ndata2 [label = \"Dataset 2\", shape = folder, fillcolor = Beige]\nprocess [label =  \"Process \n Data\"]\nstatistical [label = \"Statistical \n Analysis\"]\nresults [label= \"Results\"]\n\n# edge definitions with the node IDs\n{data1 data2}  -> process -> statistical -> results\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fb14f0ecadef9265c116" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb14f0ecadef9265c116">{"x":{"diagram":"digraph {\n\ngraph [layout = dot, rankdir = LR]\n\n# define the global styles of the nodes. We can override these in box if we wish\nnode [shape = rectangle, style = filled, fillcolor = Linen]\n\ndata1 [label = \"Dataset 1\", shape = folder, fillcolor = Beige]\ndata2 [label = \"Dataset 2\", shape = folder, fillcolor = Beige]\nprocess [label =  \"Process \n Data\"]\nstatistical [label = \"Statistical \n Analysis\"]\nresults [label= \"Results\"]\n\n# edge definitions with the node IDs\n{data1 data2}  -> process -> statistical -> results\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>

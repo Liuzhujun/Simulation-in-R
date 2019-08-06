@@ -172,7 +172,7 @@
 
 \title{R中的统计模拟}
 \author{wang}
-\date{2019-08-05}
+\date{2019-08-06}
 
 \begin{document}
 \maketitle
@@ -507,7 +507,7 @@ R借助泛型函数\footnote{程序在 \href{\%22code/Rcpp-demo.cpp\%22}{这里}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.02
+## [1] 1.133
 \end{verbatim}
 
 关键点:
@@ -532,7 +532,7 @@ R借助泛型函数\footnote{程序在 \href{\%22code/Rcpp-demo.cpp\%22}{这里}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 21.74
+## [1] 28.09
 \end{verbatim}
 
 这个程序能明显看出问题,误差不应该这么大,但是程序没有任何warning.
@@ -639,7 +639,7 @@ newdata不是必要的参数,当缺失时候会使用拟合模型的数据.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.8455
+## [1] 0.5423
 \end{verbatim}
 
 通过以上例子,想说明当程序的结果和预期不一致时.当然可能是我们的方法不对,但是也有可能是调用函数的方式出了问题.比如线性规划求解的lp函数,默认在正半轴求解\footnote{省略了常数系数.}.
@@ -684,16 +684,16 @@ R只是我们模拟使用的工具,模拟结果需要以图表的形式在文章
 
 \begin{verbatim}
 ## % latex table generated in R 3.6.0 by xtable 1.8-4 package
-## % Mon Aug  5 09:47:55 2019
+## % Tue Aug  6 09:01:36 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rrrrrr}
 ##   \hline
 ##  & 1 & 2 & 3 & 4 & 5 \\ 
 ##   \hline
-## 1 & -0.46666 & 0.68531 & -0.25135 & 0.97917 & 0.76823 \\ 
-##   2 & -0.93848 & 0.46324 & -1.02147 & -0.48296 & 0.04247 \\ 
-##   3 & -0.63633 & -1.09324 & 0.00748 & -2.16690 & -0.37086 \\ 
+## 1 & 1.42443 & -1.38918 & 1.66400 & -0.19721 & 0.28056 \\ 
+##   2 & 0.02490 & 0.82681 & -0.27839 & -0.98789 & -0.06587 \\ 
+##   3 & -0.23097 & 0.30374 & 0.29035 & 0.08272 & -0.00393 \\ 
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -770,7 +770,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 
 \begin{verbatim}
 ##    X1    X2    X3 
-## FALSE FALSE FALSE
+## FALSE FALSE  TRUE
 \end{verbatim}
 
 可以看到结果显示不相等,但是如果我们打印出来显示:
@@ -783,7 +783,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 
 \begin{verbatim}
 ##      X1      X2      X3 
-##  0.9307 -2.0048  2.8726
+##  0.8925 -2.1106  3.0365
 \end{verbatim}
 
 \begin{Shaded}
@@ -793,7 +793,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  0.9307 -2.0048  2.8726
+## [1]  0.8925 -2.1106  3.0365
 \end{verbatim}
 
 可以看到结果是一致的.这是由于计算机存储数字精度引起的.比如我们查看
@@ -806,7 +806,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 4.552e-15
+## [1] 1.998e-15
 \end{verbatim}
 
 另外,我们可以用all.equal这个函数设置容忍的误差值,判断近似相等:
@@ -832,7 +832,7 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mean relative difference: 7.837e-16"
+## [1] "Mean relative difference: 6.654e-16"
 \end{verbatim}
 
 下面考虑稍复杂的情况,取
@@ -910,11 +910,11 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 ## 
 ## Coefficients:
 ##      X1       X2       X3       X4       X5       X6  
-## -0.9136  -1.0812   0.1308   0.0902   0.8542   0.5147  
+## -1.1039  -1.0538   0.1477  -0.0958   0.7766   1.1833  
 ## 
 ## Degrees of Freedom: 500 Total (i.e. Null);  494 Residual
 ## Null Deviance:       693 
-## Residual Deviance: 593   AIC: 605
+## Residual Deviance: 569   AIC: 581
 \end{verbatim}
 
 \begin{Shaded}
@@ -926,15 +926,15 @@ M_{n}(\theta)&=-\frac{1}{n} \sum_{i=1}^{n}\left(Y_{i}-\boldsymbol{X}_{i}^{T} \bo
 \begin{verbatim}
 ## $theta
 ##          [,1]
-## [1,] -0.93491
-## [2,] -1.11849
-## [3,]  0.11274
-## [4,]  0.09284
-## [5,]  0.87808
-## [6,]  0.52674
+## [1,] -0.87757
+## [2,] -0.83540
+## [3,]  0.11336
+## [4,] -0.06956
+## [5,]  0.61555
+## [6,]  0.93599
 ## 
 ## $steps
-## [1] 5
+## [1] 2
 \end{verbatim}
 
 可以看到和真值相差不大,但是很快收敛.
@@ -1210,7 +1210,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.154 secs
+## Time difference of 2.34 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1220,10 +1220,10 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-##           [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
-## result.1 1.003 -2.001 3.005 -1.1727 -2.584 -2.439
-## result.2 1.004 -2.001 3.001  1.2478 -1.499  1.550
-## result.3 1.002 -2.003 3.001  0.8456 -2.193  2.800
+##            [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
+## result.1 0.9980 -2.000 3.002 -1.5225  5.281 33.300
+## result.2 1.0001 -1.997 2.998 -0.8967  1.138  2.556
+## result.3 0.9978 -1.999 3.007  0.6673 -1.630  3.195
 \end{verbatim}
 
 把申请cluster的命令去掉,\%dopar\%换成\%do\%程序就会按串行执行
@@ -1253,7 +1253,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.286 secs
+## Time difference of 2.633 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1263,10 +1263,10 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]   [,4]   [,5]   [,6]
-## result.1 1.0122 -2.005 3.004 -1.917 -2.588 -3.872
-## result.2 0.9973 -2.003 2.994 -2.835 -6.775 -2.712
-## result.3 1.0041 -2.005 2.995  1.019 -2.212  2.953
+##            [,1]   [,2]  [,3]   [,4]   [,5]    [,6]
+## result.1 0.9871 -2.006 2.994  5.461 -2.015 -0.8637
+## result.2 1.0030 -1.993 3.006 -1.129 -1.252 -1.0508
+## result.3 0.9953 -1.998 2.999  1.527 -2.218  3.2188
 \end{verbatim}
 
 \hypertarget{section-14}{%
@@ -1301,7 +1301,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 3.242 secs
+## Time difference of 3.668 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1311,10 +1311,10 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
-## result.1 1.0002 -2.002 3.007 2.1339 -1.191 4.508
-## result.2 0.9987 -2.005 2.999 1.6117 -1.703 3.207
-## result.3 1.0015 -2.001 2.999 0.9367 -1.038 2.027
+##           [,1]   [,2]  [,3]    [,4]    [,5]   [,6]
+## result.1 1.001 -1.999 3.001  1.8729 -0.7882 10.724
+## result.2 1.001 -1.999 2.997 -0.6922 -2.1665  3.070
+## result.3 1.000 -2.002 3.000  0.2200 -0.7819  1.951
 \end{verbatim}
 
 串行:
@@ -1344,7 +1344,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 4.531 secs
+## Time difference of 5.494 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1355,9 +1355,9 @@ sim\_single可以在
 
 \begin{verbatim}
 ##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
-## result.1 0.9935 -2.006 3.001 0.8280 -1.304 2.702
-## result.2 1.0012 -2.008 2.997 0.6967 -3.121 3.216
-## result.3 0.9970 -2.002 2.999 0.7598 -2.071 2.580
+## result.1 1.0015 -2.001 2.993 0.4662 -6.437 3.672
+## result.2 1.0007 -1.999 3.006 0.4559 -1.154 3.249
+## result.3 0.9987 -1.999 3.000 2.7252 -1.533 3.364
 \end{verbatim}
 
 \hypertarget{section-15}{%
@@ -1392,7 +1392,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 8.959 secs
+## Time difference of 10.73 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1402,10 +1402,10 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]   [,4]   [,5]  [,6]
-## result.1 1.0022 -2.002 2.994 0.8619 -1.743 2.295
-## result.2 1.0016 -2.011 3.003 1.5220 -3.314 2.860
-## result.3 0.9994 -2.004 3.002 0.9241 -2.217 3.344
+##            [,1]   [,2]  [,3]   [,4]     [,5]   [,6]
+## result.1 1.0053 -2.005 3.000 3.3844  0.07196 0.9722
+## result.2 0.9993 -1.999 3.004 0.4133 -1.99415 3.4178
+## result.3 0.9992 -2.001 3.000 1.4560 -2.34520 3.9121
 \end{verbatim}
 
 串行:
@@ -1435,7 +1435,7 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 36.57 secs
+## Time difference of 40.73 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -1445,10 +1445,118 @@ sim\_single可以在
 \end{Shaded}
 
 \begin{verbatim}
-##            [,1]   [,2]  [,3]     [,4]    [,5]    [,6]
-## result.1 0.9866 -2.002 3.000   0.7338  -2.158   2.094
-## result.2 1.0014 -2.006 3.002 -14.3951 -17.688 -14.111
-## result.3 1.0026 -1.996 2.999   0.7581  -1.506   2.894
+##            [,1]   [,2]  [,3]    [,4]   [,5]   [,6]
+## result.1 0.9967 -1.989 3.001 -0.9001 -2.721 6.8869
+## result.2 1.0005 -2.006 3.008  0.9264 -2.611 3.5339
+## result.3 0.9963 -1.997 3.002  0.2332 -2.145 0.7733
+\end{verbatim}
+
+\hypertarget{section-16}{%
+\subsection{模型选择}\label{section-16}}
+
+除了蒙特卡洛模拟之外,另外一个很适合并行的应用是模型选择.下面的例子用AIC对线性模型进行选择:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AIClm <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(Y,X,ind)\{}\CommentTok{#单次计算AIC,ind为纳入模型的变量下标}
+  \KeywordTok{AIC}\NormalTok{(}\KeywordTok{lm}\NormalTok{(Y}\OperatorTok{~}\NormalTok{X[,ind]))}
+\NormalTok{\}}
+\NormalTok{gen_ind <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(bt, index) bt}\OperatorTok{*}\NormalTok{index}\CommentTok{#生成候选模型下标}
+
+\NormalTok{n =}\StringTok{ }\DecValTok{100}
+\NormalTok{p =}\StringTok{ }\DecValTok{18}
+\NormalTok{m0 =}\StringTok{ }\NormalTok{p}\OperatorTok{%/%}\DecValTok{3}
+\NormalTok{p0 =}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{p,m0)}
+\NormalTok{beta =}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,p)}
+\NormalTok{beta[p0] =}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{2}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(n}\OperatorTok{*}\NormalTok{p),n,p)}
+\NormalTok{Y <-}\StringTok{ }\NormalTok{X}\OperatorTok{%*%}\NormalTok{beta }\OperatorTok{+}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(n)}
+
+\CommentTok{##生成所有候选模型的下标}
+\NormalTok{pl <-}\StringTok{ }\DecValTok{1}\OperatorTok{:}\NormalTok{(}\DecValTok{2}\OperatorTok{^}\NormalTok{p }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{)}
+\NormalTok{mt <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\OperatorTok{^}\NormalTok{p}\DecValTok{-1}\NormalTok{,p)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ pl) \{}
+\NormalTok{  mt[i,]=}\KeywordTok{rev}\NormalTok{(}\KeywordTok{as.integer}\NormalTok{(}\KeywordTok{intToBits}\NormalTok{(i)[}\DecValTok{1}\OperatorTok{:}\NormalTok{(p)] ))}
+\NormalTok{\}}
+\NormalTok{index =}\StringTok{ }\DecValTok{1}\OperatorTok{:}\NormalTok{p}
+\NormalTok{lst =}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{apply}\NormalTok{(mt, }\DecValTok{1}\NormalTok{, gen_ind,}\DataTypeTok{index=}\NormalTok{index))}
+
+\CommentTok{#并行}
+\KeywordTok{library}\NormalTok{(}\StringTok{"foreach"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"doParallel"}\NormalTok{)}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{cl <-}\StringTok{ }\KeywordTok{makeCluster}\NormalTok{(}\KeywordTok{detectCores}\NormalTok{())}
+\KeywordTok{registerDoParallel}\NormalTok{(cl)}
+\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{(}\DecValTok{2}\OperatorTok{^}\NormalTok{p}\DecValTok{-1}\NormalTok{),}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%dopar%}\NormalTok{\{}
+  \KeywordTok{AIClm}\NormalTok{(Y,X,lst[i,])}
+\NormalTok{\}->result}
+\KeywordTok{stopImplicitCluster}\NormalTok{()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 1.495 mins
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which}\NormalTok{(lst[}\KeywordTok{which.min}\NormalTok{(result),]}\OperatorTok{!=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  2  4  6  9 10 12 15 18
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which}\NormalTok{(beta}\OperatorTok{!=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  2  4  6  9 10 15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#串行}
+\NormalTok{tstart=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{cl <-}\StringTok{ }\KeywordTok{makeCluster}\NormalTok{(}\KeywordTok{detectCores}\NormalTok{())}
+\KeywordTok{registerDoParallel}\NormalTok{(cl)}
+\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{i=}\DecValTok{1}\OperatorTok{:}\NormalTok{(}\DecValTok{2}\OperatorTok{^}\NormalTok{p}\DecValTok{-1}\NormalTok{),}\DataTypeTok{.combine =}\NormalTok{ c) }\OperatorTok{%do%}\NormalTok{\{}
+  \KeywordTok{AIClm}\NormalTok{(Y,X,lst[i,])}
+\NormalTok{\}->result}
+\KeywordTok{stopImplicitCluster}\NormalTok{()}
+\NormalTok{t.end=}\KeywordTok{Sys.time}\NormalTok{()}
+\NormalTok{t.end}\OperatorTok{-}\NormalTok{tstart}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time difference of 3.478 mins
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which}\NormalTok{(lst[}\KeywordTok{which.min}\NormalTok{(result),]}\OperatorTok{!=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  2  4  6  9 10 12 15 18
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which}\NormalTok{(beta}\OperatorTok{!=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  2  4  6  9 10 15
 \end{verbatim}
 
 \hypertarget{rcpp}{%
@@ -1476,7 +1584,7 @@ Rcpp提供了R与C++的无缝接口,可以很方便的在R中调用编写的C++�
 
 \begin{verbatim}
 ## function (x, y, z) 
-## .Call(<pointer: 0x10fe018f0>, x, y, z)
+## .Call(<pointer: 0x10af678f0>, x, y, z)
 \end{verbatim}
 
 \begin{Shaded}
@@ -1561,7 +1669,7 @@ Rcpp提供了R与C++的无缝接口,可以很方便的在R中调用编写的C++�
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-40-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-41-1.pdf}
 
 对比结果如图所示,其中gc\footnote{垃圾回收（英语：Garbage Collection，缩写为GC），在计算机科学中是一种自动的存储器管理机制。当一个计算机上的动态存储器不再需要时，就应该予以释放，以让出存储器，这种存储器资源管理，称为垃圾回收。}是一个关于内存使用的指标,越低越好.
 
@@ -1635,7 +1743,7 @@ apply和在R中用循环编写函数速度差不多,用C++编写的函数明显�
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-41-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-42-1.pdf}
 
 可以看到,还是base库中提供的函数速度最快.
 

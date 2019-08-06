@@ -59,6 +59,7 @@ apply(a,c(1,2),tapply,rep(c(-1,-2),2), sum)
 
 **单次模拟时间越长,重复次数越多,并行得到的提升越明显.**
 
+
 R中有很多并行包,可以在
 [不同并行包比较](https://yulongniu.bionutshell.org/blog/2014/06/25/parallel-package/)查看对比.
 
@@ -225,6 +226,65 @@ result <- foreach(n=N,.combine = rbind) %:%
 t.end=Sys.time()
 t.end-tstart
 result/SIM
+```
+
+
+### 模型选择
+
+除了蒙特卡洛模拟之外,另外一个很适合并行的应用是模型选择.下面的例子用AIC对线性模型进行选择:
+
+```{r,cache=TRUE, cache.path="code/cache/"}
+AIClm <- function(Y,X,ind){#单次计算AIC,ind为纳入模型的变量下标
+  AIC(lm(Y~X[,ind]))
+}
+gen_ind <- function(bt, index) bt*index#生成候选模型下标
+
+n = 100
+p = 18
+m0 = p%/%3
+p0 = sample(1:p,m0)
+beta = rep(0,p)
+beta[p0] = 1:2
+X <- matrix(rnorm(n*p),n,p)
+Y <- X%*%beta + rnorm(n)
+
+##生成所有候选模型的下标
+pl <- 1:(2^p - 1)
+mt <- matrix(0,2^p-1,p)
+for (i in pl) {
+  mt[i,]=rev(as.integer(intToBits(i)[1:(p)] ))
+}
+index = 1:p
+lst = t(apply(mt, 1, gen_ind,index=index))
+
+#并行
+library("foreach")
+library("doParallel")
+tstart=Sys.time()
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+foreach(i=1:(2^p-1),.combine = c) %dopar%{
+  AIClm(Y,X,lst[i,])
+}->result
+stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+which(lst[which.min(result),]!=0)
+which(beta!=0)
+
+#串行
+tstart=Sys.time()
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+foreach(i=1:(2^p-1),.combine = c) %do%{
+  AIClm(Y,X,lst[i,])
+}->result
+stopImplicitCluster()
+t.end=Sys.time()
+t.end-tstart
+which(lst[which.min(result),]!=0)
+which(beta!=0)
+
 ```
 
 
